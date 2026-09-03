@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "joezhang-tools"
+  },
+  "targets": {
+    "joezhang-tools": {
+      "hosting": {
+        "sectorrotation": [
+          "joezhang-sectorrotation"
+        ]
+      }
+    }
+  }
+}

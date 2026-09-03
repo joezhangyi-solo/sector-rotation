@@ -1,0 +1,13 @@
+{
+  "name": "sector-rotation",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Relative rotation graph for the 11 S&P 500 sector SPDRs — sectorrotation.joezhang.co",
+  "scripts": {
+    "build:data": "node scripts/build-data.mjs",
+    "serve": "npx --yes http-server public -p 8080 -c-1",
+    "deploy": "firebase deploy --only hosting:sectorrotation"
+  },
+  "engines": { "node": ">=20" }
+}

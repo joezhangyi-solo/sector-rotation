@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sector Rotation &mdash; joezhang.co</title>
+<meta name="description" content="Free relative rotation graph for the 11 S&amp;P 500 sector SPDRs against SPY. See which sectors are leading, weakening, lagging and improving &mdash; updated every trading day.">
+<link rel="canonical" href="https://sectorrotation.joezhang.co/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="joezhang.co">
+<meta property="og:title" content="Sector Rotation">
+<meta property="og:description" content="Which S&amp;P 500 sectors are leading, and which are rolling over? A live relative rotation graph, updated every trading day.">
+<meta property="og:url" content="https://sectorrotation.joezhang.co/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MMQ4YJJKH5"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-MMQ4YJJKH5');</script>
+</head>
+<body>
+<style>
+  :root {
+    color-scheme: light;
+    --page:        #f9f9f7;
+    --surface:     #fcfcfb;
+    --ink:         #0b0b0b;
+    --ink-2:       #52514e;
+    --muted:       #898781;
+    --grid:        #e1e0d9;
+    --baseline:    #c3c2b7;
+    --border:      rgba(11,11,11,0.10);
+    --series:      #2a78d6;
+    --series-soft: rgba(42,120,214,0.12);
+    --series-strong: #1c5cab;
+    --good:        #0ca30c;
+    --good-text:   #006300;
+    --good-wash:   rgba(12,163,12,0.08);
+    --crit:        #d03b3b;
+    --crit-text:   #a32222;
+    --crit-wash:   rgba(208,59,59,0.08);
+    --input-bg:    #ffffff;
+    --track:       #e1e0d9;
+    --focus:       #2a78d6;
+    /* quadrant washes */
+    --q-lead:    rgba(12,163,12,0.09);
+    --q-improve: rgba(42,120,214,0.09);
+    --q-weaken:  rgba(196,142,16,0.11);
+    --q-lag:     rgba(208,59,59,0.09);
+    --q-lead-ink:    #006300;
+    --q-improve-ink: #1c5cab;
+    --q-weaken-ink:  #7d5a06;
+    --q-lag-ink:     #a32222;
+    --plot-ink: rgba(11,11,11,0.45);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page:        #0d0d0d;
+      --surface:     #1a1a19;
+      --ink:         #ffffff;
+      --ink-2:       #c3c2b7;
+      --muted:       #898781;
+      --grid:        #2c2c2a;
+      --baseline:    #383835;
+      --border:      rgba(255,255,255,0.10);
+      --series:      #3987e5;
+      --series-soft: rgba(57,135,229,0.16);
+      --series-strong: #6da7ec;
+      --good:        #0ca30c;
+      --good-text:   #2fc42f;
+      --good-wash:   rgba(12,163,12,0.12);
+      --crit:        #d03b3b;
+      --crit-text:   #ef7d7d;
+      --crit-wash:   rgba(208,59,59,0.14);
+      --input-bg:    #242423;
+      --track:       #383835;
+      --focus:       #3987e5;
+      --q-lead:    rgba(12,163,12,0.10);
+      --q-improve: rgba(57,135,229,0.10);
+      --q-weaken:  rgba(214,160,32,0.10);
+      --q-lag:     rgba(208,59,59,0.10);
+      --q-lead-ink:    #2fc42f;
+      --q-improve-ink: #6da7ec;
+      --q-weaken-ink:  #d6a020;
+      --q-lag-ink:     #ef7d7d;
+      --plot-ink: rgba(255,255,255,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:        #0d0d0d;
+    --surface:     #1a1a19;
+    --ink:         #ffffff;
+    --ink-2:       #c3c2b7;
+    --muted:       #898781;
+    --grid:        #2c2c2a;
+    --baseline:    #383835;
+    --border:      rgba(255,255,255,0.10);
+    --series:      #3987e5;
+    --series-soft: rgba(57,135,229,0.16);
+    --series-strong: #6da7ec;
+    --good:        #0ca30c;
+    --good-text:   #2fc42f;
+    --good-wash:   rgba(12,163,12,0.12);
+    --crit:        #d03b3b;
+    --crit-text:   #ef7d7d;
+    --crit-wash:   rgba(208,59,59,0.14);
+    --input-bg:    #242423;
+    --track:       #383835;
+    --focus:       #3987e5;
+    --q-lead:    rgba(12,163,12,0.10);
+    --q-improve: rgba(57,135,229,0.10);
+    --q-weaken:  rgba(214,160,32,0.10);
+    --q-lag:     rgba(208,59,59,0.10);
+    --q-lead-ink:    #2fc42f;
+    --q-improve-ink: #6da7ec;
+    --q-weaken-ink:  #d6a020;
+    --q-lag-ink:     #ef7d7d;
+    --plot-ink: rgba(255,255,255,0.45);
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --page:        #f9f9f7;
+    --surface:     #fcfcfb;
+    --ink:         #0b0b0b;
+    --ink-2:       #52514e;
+    --muted:       #898781;
+    --grid:        #e1e0d9;
+    --baseline:    #c3c2b7;
+    --border:      rgba(11,11,11,0.10);
+    --series:      #2a78d6;
+    --series-soft: rgba(42,120,214,0.12);
+    --series-strong: #1c5cab;
+    --good:        #0ca30c;
+    --good-text:   #006300;
+    --good-wash:   rgba(12,163,12,0.08);
+    --crit:        #d03b3b;
+    --crit-text:   #a32222;
+    --crit-wash:   rgba(208,59,59,0.08);
+    --input-bg:    #ffffff;
+    --track:       #e1e0d9;
+    --focus:       #2a78d6;
+    --q-lead:    rgba(12,163,12,0.09);
+    --q-improve: rgba(42,120,214,0.09);
+    --q-weaken:  rgba(196,142,16,0.11);
+    --q-lag:     rgba(208,59,59,0.09);
+    --q-lead-ink:    #006300;
+    --q-improve-ink: #1c5cab;
+    --q-weaken-ink:  #7d5a06;
+    --q-lag-ink:     #a32222;
+    --plot-ink: rgba(11,11,11,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  header.app-head { margin-bottom: 24px; }
+  .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted); margin: 0 0 6px;
+  }
+  h1 {
+    font-size: clamp(24px, 3.4vw, 34px); font-weight: 700;
+    letter-spacing: -0.02em; margin: 0; text-wrap: balance;
+  }
+  .subhead { color: var(--ink-2); margin: 8px 0 0; max-width: 62ch; }
+
+  .head-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .head-row .share-btn { margin-top: 4px; }
+
+  /* ---------- freshness ---------- */
+  .freshness {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+    padding: 6px 12px 6px 10px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-size: 12.5px; color: var(--ink-2);
+  }
+  .freshness .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--good); flex: none;
+  }
+  .freshness.stale .dot { background: #c48e10; }
+  .freshness b { color: var(--ink); font-weight: 650; font-variant-numeric: tabular-nums; }
+
+  /* ---------- stat tiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 860px) { .tiles { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+  @media (max-width: 359px) { .tiles { grid-template-columns: 1fr; } }
+  .tile {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; min-width: 0;
+  }
+  .tile .label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .tile .value {
+    font-size: clamp(20px, 2.4vw, 26px); font-weight: 650;
+    letter-spacing: -0.02em; margin-top: 4px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .tile .sub { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+  .tile .sub.up { color: var(--good-text); font-weight: 600; }
+  .tile .sub.down { color: var(--crit-text); font-weight: 600; }
+
+  /* ---------- controls ---------- */
+  .controls {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 16px;
+    display: flex; flex-wrap: wrap; gap: 18px 24px; align-items: center;
+  }
+  .ctl { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .ctl > label, .ctl .lbl {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); white-space: nowrap;
+  }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 999px; padding: 2px; background: var(--input-bg); }
+  .seg button {
+    font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-2);
+    background: none; border: 0; border-radius: 999px; padding: 5px 14px; cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .seg button[aria-pressed="true"] { background: var(--series); color: #fff; }
+  .seg button:not([aria-pressed="true"]):hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font: inherit; font-size: 13px; font-weight: 600; color: var(--ink);
+    background: var(--input-bg); border: 1px solid var(--border);
+    border-radius: 999px; padding: 6px 15px; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: var(--series-soft); }
+  .btn[aria-pressed="true"] { background: var(--series); border-color: var(--series); color: #fff; }
+
+  input[type="range"] { accent-color: var(--series); height: 20px; margin: 0; }
+  #tail { width: 120px; }
+  #scrub { width: 100%; }
+  .ctl .num { font-size: 13px; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; min-width: 4.5ch; }
+  .ctl.grow { flex: 1 1 260px; }
+
+  button:focus-visible, a:focus-visible, input:focus-visible,
+  [tabindex]:focus-visible, .hit:focus-visible {
+    outline: 2px solid var(--focus); outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* ---------- chart ---------- */
+  .chart-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 18px 12px; margin-bottom: 16px;
+  }
+  .chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .chart-title { font-size: 15px; font-weight: 700; margin: 0; }
+  .chart-note { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  #chart-box { position: relative; }
+  #chart-box svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+
+  .qlabel { font-size: 12px; font-weight: 650; letter-spacing: 0.1em; text-transform: uppercase; }
+  .axis { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .axistitle { font-size: 11.5px; font-weight: 600; fill: var(--ink-2); }
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .crosshair { stroke: var(--baseline); stroke-width: 1.4; }
+  .sym-label { font-size: 11.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .hit { cursor: pointer; }
+
+  #tooltip {
+    position: absolute; pointer-events: none; display: none;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 9px 12px; font-size: 12.5px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18); min-width: 178px; z-index: 5;
+  }
+  #tooltip .tt-title { font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 7px; }
+  #tooltip .tt-title .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  #tooltip .tt-row { display: flex; justify-content: space-between; gap: 14px; color: var(--ink-2); }
+  #tooltip .tt-row b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  /* ---------- legend ---------- */
+  .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .legend button {
+    display: inline-flex; align-items: center; gap: 6px;
+    font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink);
+    background: var(--input-bg); border: 1px solid var(--border);
+    border-radius: 999px; padding: 4px 11px 4px 8px; cursor: pointer;
+  }
+  .legend button .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  .legend button[aria-pressed="false"] { opacity: 0.42; }
+  .legend button[aria-pressed="false"] .sw { background: var(--muted) !important; }
+
+  /* ---------- table ---------- */
+  .table-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; margin-bottom: 16px;
+  }
+  .table-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 12px; flex-wrap: wrap; padding: 14px 18px 12px;
+  }
+  .table-head h2 { font-size: 15px; font-weight: 700; margin: 0; }
+  .table-head .note { font-size: 12.5px; color: var(--muted); }
+  .table-scroll { overflow-x: auto; border-top: 1px solid var(--border); }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13px; }
+  th, td { padding: 8px 14px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 1px solid var(--border); background: var(--surface);
+  }
+  thead th button {
+    font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
+    letter-spacing: inherit; text-transform: inherit; display: inline-flex; align-items: center; gap: 4px;
+  }
+  thead th button .arrow { opacity: 0; font-size: 9px; }
+  thead th button[data-active="true"] { color: var(--ink); }
+  thead th button[data-active="true"] .arrow { opacity: 1; }
+  tbody tr { border-bottom: 1px solid var(--grid); cursor: pointer; }
+  tbody tr:last-child { border-bottom: 0; }
+  tbody tr:hover { background: var(--series-soft); }
+  tbody tr.off { opacity: 0.4; }
+  tbody td .name { display: inline-flex; align-items: center; gap: 9px; }
+  tbody td .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  tbody td .ticker { font-weight: 700; }
+  tbody td .full { color: var(--ink-2); }
+  td.up { color: var(--good-text); font-weight: 600; }
+  td.down { color: var(--crit-text); font-weight: 600; }
+  .pill {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 650; letter-spacing: 0.02em;
+  }
+  .pill.Leading   { background: var(--q-lead);    color: var(--q-lead-ink); }
+  .pill.Improving { background: var(--q-improve); color: var(--q-improve-ink); }
+  .pill.Weakening { background: var(--q-weaken);  color: var(--q-weaken-ink); }
+  .pill.Lagging   { background: var(--q-lag);     color: var(--q-lag-ink); }
+
+  /* ---------- explainer ---------- */
+  .explain {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; margin-bottom: 16px;
+  }
+  .explain-toggle {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    background: none; border: 0; padding: 14px 18px; cursor: pointer;
+    font: inherit; font-weight: 700; color: var(--ink);
+  }
+  .explain-toggle .chev { transition: transform 0.15s; color: var(--muted); }
+  .explain.open .explain-toggle .chev { transform: rotate(180deg); }
+  .explain-body { display: none; padding: 0 18px 18px; border-top: 1px solid var(--border); }
+  .explain.open .explain-body { display: block; }
+  .explain-body p { color: var(--ink-2); max-width: 74ch; }
+  .explain-body p b { color: var(--ink); }
+  .quad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; max-width: 560px; }
+  @media (max-width: 520px) { .quad-grid { grid-template-columns: 1fr; } }
+  .quad { border-radius: 8px; padding: 11px 13px; border: 1px solid var(--border); }
+  .quad h3 { margin: 0 0 3px; font-size: 13px; font-weight: 700; }
+  .quad p { margin: 0; font-size: 12.5px; line-height: 1.45; }
+  .quad.lead    { background: var(--q-lead); }    .quad.lead h3    { color: var(--q-lead-ink); }
+  .quad.weaken  { background: var(--q-weaken); }  .quad.weaken h3  { color: var(--q-weaken-ink); }
+  .quad.lag     { background: var(--q-lag); }     .quad.lag h3     { color: var(--q-lag-ink); }
+  .quad.improve { background: var(--q-improve); } .quad.improve h3 { color: var(--q-improve-ink); }
+  .formula {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px;
+    background: var(--page); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; overflow-x: auto; color: var(--ink-2); line-height: 1.7;
+  }
+
+  footer.app-foot { margin-top: 4px; color: var(--muted); font-size: 12.5px; max-width: 74ch; }
+
+  /* ---------- joezhang.co branding ---------- */
+  .brand {
+    margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
+  }
+  .brand .wordmark {
+    font-size: 20px; font-weight: 750; letter-spacing: -0.02em;
+    color: var(--ink); text-decoration: none;
+  }
+  .brand .wordmark .tld { color: #03c961; }
+  .brand .tagline { color: var(--ink-2); font-size: 14px; max-width: 46ch; margin: 0; }
+  .brand .cta {
+    display: inline-block; margin-top: 4px; padding: 10px 22px; border-radius: 999px;
+    background: #03c961; color: #062812; font-weight: 700; font-size: 14px;
+    text-decoration: none; letter-spacing: 0.01em;
+  }
+  .brand .cta:hover { background: #02b356; }
+  .brand .byline { margin: 0; }
+  .brand .byline .by { color: var(--muted); font-size: 13px; margin-right: 6px; }
+
+  /* ---------- share ---------- */
+  .share-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border: 0; border-radius: 999px;
+    background: var(--series); color: #fff;
+    font: inherit; font-size: 14px; font-weight: 650; letter-spacing: 0.01em;
+    cursor: pointer; white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .share-btn:hover { background: var(--series-strong); }
+  .share-btn svg { flex: none; }
+  .share-btn.copied { background: var(--good); }
+  .share-block {
+    margin-top: 24px; padding: 22px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .share-block .share-copy { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .share-block .share-sub { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .loading { padding: 60px 0; text-align: center; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 24px 16px 48px; }
+    .tile { padding: 11px 13px; }
+    .tile .value { font-size: 21px; }
+    .chart-card { padding: 14px 12px 10px; }
+    .controls { padding: 12px 14px; gap: 14px 18px; }
+    .ctl.grow { flex-basis: 100%; }
+    /* the RRG needs width to stay legible, so let it scroll rather than shrink */
+    #chart-box { overflow-x: auto; }
+    #chart-box svg { min-width: 560px; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="app-head">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">S&amp;P 500 relative rotation</p>
+        <h1><span aria-hidden="true">&#129517;</span> Sector Rotation</h1>
+      </div>
+      <button class="share-btn" type="button" data-share>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"></line><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line></svg>
+        <span data-share-label>Share</span>
+      </button>
+    </div>
+    <p class="subhead">The eleven S&amp;P 500 sector SPDRs plotted against <span class="bench-name">SPY</span>. Each tail is a path through relative strength and momentum &mdash; where a sector sits matters less than the direction it is travelling.</p>
+    <div class="freshness" id="freshness">
+      <span class="dot" aria-hidden="true"></span>
+      <span id="freshness-text">Loading market data&hellip;</span>
+    </div>
+  </header>
+
+  <div id="app" hidden>
+    <div class="tiles">
+      <div class="tile">
+        <div class="label"><span class="bench-name">SPY</span> benchmark</div>
+        <div class="value" id="t-bench">&mdash;</div>
+        <div class="sub" id="t-bench-sub">&mdash;</div>
+      </div>
+      <div class="tile">
+        <div class="label">Leading</div>
+        <div class="value" id="t-lead">&mdash;</div>
+        <div class="sub" id="t-lead-sub">&mdash;</div>
+      </div>
+      <div class="tile">
+        <div class="label">Strongest</div>
+        <div class="value" id="t-strong">&mdash;</div>
+        <div class="sub" id="t-strong-sub">&mdash;</div>
+      </div>
+      <div class="tile">
+        <div class="label">Weakest</div>
+        <div class="value" id="t-weak">&mdash;</div>
+        <div class="sub" id="t-weak-sub">&mdash;</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="ctl">
+        <span class="lbl" id="lbl-tf">Timeframe</span>
+        <div class="seg" role="group" aria-labelledby="lbl-tf">
+          <button type="button" id="btn-weekly" aria-pressed="true">Weekly</button>
+          <button type="button" id="btn-daily" aria-pressed="false">Daily</button>
+        </div>
+      </div>
+
+      <div class="ctl">
+        <label for="tail">Tail</label>
+        <input type="range" id="tail" min="1" max="20" value="8" aria-describedby="tail-n">
+        <span class="num" id="tail-n">8</span>
+      </div>
+
+      <div class="ctl">
+        <button type="button" class="btn" id="play" aria-pressed="false">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true" id="play-icon"><path d="M2 1l8 5-8 5z"/></svg>
+          <span id="play-label">Animate</span>
+        </button>
+      </div>
+
+      <div class="ctl grow">
+        <label for="scrub">Date</label>
+        <input type="range" id="scrub" min="0" max="1" value="1">
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <h2 class="chart-title">Relative rotation graph</h2>
+        <span class="chart-note" id="asof-note">&mdash;</span>
+      </div>
+      <div id="chart-box">
+        <svg id="chart" viewBox="0 0 900 620" role="img" aria-labelledby="chart-desc"></svg>
+        <p id="chart-desc" class="visually-hidden"></p>
+        <div id="tooltip" role="presentation"></div>
+      </div>
+      <div class="legend" id="legend" role="group" aria-label="Show or hide sectors"></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-head">
+        <h2>Sectors at this date</h2>
+        <span class="note" id="table-note">Click a row to hide that sector from the chart</span>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th><button type="button" data-sort="name">Sector <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+              <th><button type="button" data-sort="price">Price <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+              <th><button type="button" data-sort="chg">Change <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+              <th><button type="button" data-sort="x">RS-Ratio <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+              <th><button type="button" data-sort="y">Momentum <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+              <th><button type="button" data-sort="quad" data-active="true">Quadrant <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="explain" id="explain">
+      <button class="explain-toggle" id="explain-toggle" aria-expanded="false" aria-controls="explain-body">
+        How to read this chart
+        <span class="chev" aria-hidden="true">&#9660;</span>
+      </button>
+      <div class="explain-body" id="explain-body">
+        <p>
+          The horizontal axis is <b>relative strength</b> &mdash; how a sector has performed against
+          <span class="bench-name">SPY</span>, normalised so that 100 is the benchmark. The vertical axis is the
+          <b>momentum of that relative strength</b>: whether the sector is gaining ground or giving it back.
+          Together they split the plane into four quadrants, and money tends to travel clockwise through them.
+        </p>
+        <div class="quad-grid">
+          <div class="quad improve"><h3>Improving</h3><p>Still behind the index, but the gap is closing. Early money arrives here.</p></div>
+          <div class="quad lead"><h3>Leading</h3><p>Ahead of the index and still pulling away. The crowded trade.</p></div>
+          <div class="quad lag"><h3>Lagging</h3><p>Behind and falling further behind. The waiting room.</p></div>
+          <div class="quad weaken"><h3>Weakening</h3><p>Still ahead of the index, but losing steam. Money is leaving.</p></div>
+        </div>
+        <p>
+          <b>Tail</b> sets how far back each sector's path is drawn. At 1 you see only today's position;
+          longer tails show the route it took to get there, which is what tells you whether a sector is
+          arriving or leaving. <b>Animate</b> replays the last stretch of history so you can watch the
+          rotation unfold. Drag <b>Date</b> to rewind the whole chart to any past point.
+        </p>
+        <p>
+          The maths is the standard JdK-style construction, computed from split- and dividend-adjusted closes:
+        </p>
+        <div class="formula" id="formula"></div>
+        <p style="margin-bottom:0">
+          This is a description of price behaviour, not a recommendation. Rotation signals are noisy at the
+          edges, and a sector sitting near the centre of the chart is telling you very little.
+        </p>
+      </div>
+    </div>
+
+    <footer class="app-foot" id="foot"></footer>
+  </div>
+
+  <div class="loading" id="loading">Loading market data&hellip;</div>
+  <p class="visually-hidden" role="status" aria-live="polite" id="live-status"></p>
+
+  <div class="share-block">
+    <div>
+      <div class="share-copy">Know someone watching the market?</div>
+      <div class="share-sub">Send them the rotation map &mdash; it&rsquo;s free, no sign-up.</div>
+    </div>
+    <button class="share-btn" type="button" data-share>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"></line><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line></svg>
+      <span data-share-label>Share this tool</span>
+    </button>
+  </div>
+
+  <p class="visually-hidden" role="status" aria-live="polite" id="share-status"></p>
+
+  <footer class="brand">
+    <p class="byline"><span class="by">A free tool by</span><a class="wordmark" href="https://joezhang.co/?utm_source=sector_rotation&amp;utm_medium=web_app&amp;utm_campaign=tools" target="_blank" rel="noopener">joezhang<span class="tld">.co</span></a></p>
+    <p class="tagline">Practical tips and learnings from my journey of building a multi-income dream life &mdash; in a free weekly newsletter.</p>
+    <a class="cta" href="https://joezhang.co/?utm_source=sector_rotation&amp;utm_medium=web_app&amp;utm_campaign=tools#/portal/signup" target="_blank" rel="noopener">Get the weekly newsletter</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var COLORS = {
+    XLB: "#c98a4b", XLC: "#7f7ae0", XLE: "#d4694a", XLF: "#4f9de0",
+    XLI: "#8fa2b5", XLK: "#3fbfae", XLP: "#a9b84c", XLRE: "#c96fa6",
+    XLU: "#6fb36f", XLV: "#4fa3d1", XLY: "#e0a83f"
+  };
+  var SYMS = Object.keys(COLORS);
+  var QUAD_ORDER = { Leading: 0, Weakening: 1, Lagging: 2, Improving: 3 };
+
+  var FORMULA = [
+    "RS        = 100 x sector / SPY            (adjusted closes)",
+    "ratioRaw  = 100 x ((EMA(RS,10) - EMA(RS,26)) / EMA(RS,26) + 1)",
+    "RS-Ratio  = 100 + zscore(ratioRaw, 52w / 120d)",
+    "momRaw    = 100 x ((EMA(R,f) - EMA(R,s)) / EMA(R,s) + 1)   f,s = 2,3 weekly / 2,6 daily",
+    "Momentum  = 100 + zscore(momRaw, 26w / 60d)"
+  ].join("\n");
+
+  var DATA = null;
+  var mode = "weekly";
+  var tailLen = 8;
+  var cursor = null;          // null = latest
+  var timer = null;
+  var hidden = {};            // sym -> true when hidden
+  var sortKey = "quad";
+  var sortDir = 1;            // 1 = ascending on the key's natural order
+  var lastSeries = [];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var frame = function () { return DATA[mode]; };
+  var endIndex = function () {
+    var n = frame().dates.length - 1;
+    return cursor === null ? n : Math.max(0, Math.min(cursor, n));
+  };
+
+  // Prices in data.json are the latest close only, so they are meaningless
+  // once the chart has been rewound to an earlier date.
+  function isRewound() {
+    return cursor !== null && cursor < frame().dates.length - 1;
+  }
+
+  function quadOf(x, y) {
+    return x >= 100 ? (y >= 100 ? "Leading" : "Weakening")
+                    : (y >= 100 ? "Improving" : "Lagging");
+  }
+
+  /* ---------- date helpers ---------- */
+  var DATE_FMT = new Intl.DateTimeFormat("en-US", {
+    month: "short", day: "numeric", year: "numeric", timeZone: "UTC"
+  });
+  function prettyDate(iso) {
+    var d = new Date(iso + "T00:00:00Z");
+    return isNaN(d) ? iso : DATE_FMT.format(d);
+  }
+  function daysSince(iso) {
+    var d = new Date(iso + "T21:00:00Z");
+    return Math.floor((Date.now() - d.getTime()) / 86400000);
+  }
+
+  /* ---------- URL state ---------- */
+  function readUrlState() {
+    var p = new URLSearchParams(location.search);
+    if (p.get("tf") === "daily") mode = "daily";
+    var t = parseInt(p.get("tail"), 10);
+    if (isFinite(t) && t >= 1 && t <= 20) tailLen = t;
+    var h = p.get("hide");
+    if (h) h.split(",").forEach(function (s) { if (COLORS[s]) hidden[s] = true; });
+  }
+  function writeUrlState() {
+    var p = new URLSearchParams();
+    if (mode !== "weekly") p.set("tf", mode);
+    if (tailLen !== 8) p.set("tail", String(tailLen));
+    var off = SYMS.filter(function (s) { return hidden[s]; });
+    if (off.length) p.set("hide", off.join(","));
+    var qs = p.toString();
+    history.replaceState(null, "", qs ? "?" + qs : location.pathname);
+  }
+
+  /* ---------- series selection ---------- */
+  function visibleSeries() {
+    var f = frame(), end = endIndex(), out = [];
+    SYMS.forEach(function (sym) {
+      if (hidden[sym] || !f.sectors[sym]) return;
+      var pts = f.sectors[sym].points;
+      var i = Math.min(end, pts.length - 1);
+      out.push({ sym: sym, tail: pts.slice(Math.max(0, i - tailLen + 1), i + 1) });
+    });
+    return out;
+  }
+
+  function rowsAtCursor() {
+    var f = frame(), end = endIndex();
+    return SYMS.filter(function (s) { return f.sectors[s]; }).map(function (sym) {
+      var sec = f.sectors[sym];
+      var p = sec.points[Math.min(end, sec.points.length - 1)];
+      return {
+        sym: sym, name: sec.name, price: sec.price, chg: sec.chg,
+        x: p.x, y: p.y, quad: quadOf(p.x, p.y)
+      };
+    });
+  }
+
+  /* ---------- chart ---------- */
+  function draw() {
+    var svg = $("chart"), W = 900, H = 620;
+    var m = { l: 54, r: 20, t: 18, b: 46 };
+    var series = visibleSeries();
+    lastSeries = series;
+
+    var xs = [], ys = [];
+    series.forEach(function (s) {
+      s.tail.forEach(function (p) { xs.push(p.x); ys.push(p.y); });
+    });
+    if (!xs.length) { xs = [99, 101]; ys = [99, 101]; }
+
+    var pad = 0.55;
+    var x0 = Math.min.apply(null, xs.concat(99.4)) - pad;
+    var x1 = Math.max.apply(null, xs.concat(100.6)) + pad;
+    var y0 = Math.min.apply(null, ys.concat(99.4)) - pad;
+    var y1 = Math.max.apply(null, ys.concat(100.6)) + pad;
+
+    var X = function (v) { return m.l + ((v - x0) / (x1 - x0)) * (W - m.l - m.r); };
+    var Y = function (v) { return H - m.b - ((v - y0) / (y1 - y0)) * (H - m.t - m.b); };
+    var cx = X(100), cy = Y(100);
+    var g = "";
+
+    // quadrant washes
+    [
+      [m.l, m.t, cx - m.l, cy - m.t, "--q-improve", "Improving", "start", "top"],
+      [cx, m.t, W - m.r - cx, cy - m.t, "--q-lead", "Leading", "end", "top"],
+      [m.l, cy, cx - m.l, H - m.b - cy, "--q-lag", "Lagging", "start", "bottom"],
+      [cx, cy, W - m.r - cx, H - m.b - cy, "--q-weaken", "Weakening", "end", "bottom"]
+    ].forEach(function (q) {
+      if (q[2] <= 0 || q[3] <= 0) return;
+      g += '<rect x="' + q[0] + '" y="' + q[1] + '" width="' + q[2] + '" height="' + q[3] +
+           '" fill="var(' + q[4] + ')"/>';
+      var tx = q[6] === "start" ? q[0] + 13 : q[0] + q[2] - 13;
+      var ty = q[7] === "top" ? q[1] + 22 : q[1] + q[3] - 11;
+      g += '<text class="qlabel" x="' + tx + '" y="' + ty + '" text-anchor="' + q[6] +
+           '" fill="var(--' + ({ Improving: "q-improve-ink", Leading: "q-lead-ink",
+                                 Lagging: "q-lag-ink", Weakening: "q-weaken-ink" })[q[5]] +
+           ')" opacity="0.75">' + q[5] + "</text>";
+    });
+
+    // gridlines
+    var stepX = (x1 - x0) > 6 ? 1 : 0.5;
+    for (var v = Math.ceil(x0 / stepX) * stepX; v <= x1; v += stepX) {
+      g += '<line class="gridline" x1="' + X(v).toFixed(1) + '" y1="' + m.t +
+           '" x2="' + X(v).toFixed(1) + '" y2="' + (H - m.b) + '"/>';
+      g += '<text class="axis" x="' + X(v).toFixed(1) + '" y="' + (H - m.b + 17) +
+           '" text-anchor="middle">' + v.toFixed(1) + "</text>";
+    }
+    var stepY = (y1 - y0) > 6 ? 1 : 0.5;
+    for (var w = Math.ceil(y0 / stepY) * stepY; w <= y1; w += stepY) {
+      g += '<line class="gridline" x1="' + m.l + '" y1="' + Y(w).toFixed(1) +
+           '" x2="' + (W - m.r) + '" y2="' + Y(w).toFixed(1) + '"/>';
+      g += '<text class="axis" x="' + (m.l - 9) + '" y="' + (Y(w) + 4).toFixed(1) +
+           '" text-anchor="end">' + w.toFixed(1) + "</text>";
+    }
+
+    // benchmark crosshair at 100/100
+    g += '<line class="crosshair" x1="' + cx.toFixed(1) + '" y1="' + m.t +
+         '" x2="' + cx.toFixed(1) + '" y2="' + (H - m.b) + '"/>';
+    g += '<line class="crosshair" x1="' + m.l + '" y1="' + cy.toFixed(1) +
+         '" x2="' + (W - m.r) + '" y2="' + cy.toFixed(1) + '"/>';
+
+    g += '<text class="axistitle" x="' + ((m.l + W - m.r) / 2) + '" y="' + (H - 8) +
+         '" text-anchor="middle">Relative strength vs ' + DATA.benchmark + "</text>";
+    g += '<text class="axistitle" transform="translate(15,' + ((m.t + H - m.b) / 2) +
+         ') rotate(-90)" text-anchor="middle">Momentum of relative strength</text>';
+
+    // tails, then heads on top
+    var heads = "";
+    series.forEach(function (s) {
+      var c = COLORS[s.sym], t = s.tail;
+      if (t.length > 1) {
+        var d = t.map(function (p, i) {
+          return (i ? "L" : "M") + X(p.x).toFixed(1) + " " + Y(p.y).toFixed(1);
+        }).join(" ");
+        g += '<path d="' + d + '" fill="none" stroke="' + c +
+             '" stroke-width="1.7" stroke-opacity="0.65" stroke-linejoin="round" stroke-linecap="round"/>';
+        for (var i = 0; i < t.length - 1; i++) {
+          g += '<circle cx="' + X(t[i].x).toFixed(1) + '" cy="' + Y(t[i].y).toFixed(1) +
+               '" r="2.1" fill="' + c + '" fill-opacity="0.5"/>';
+        }
+      }
+      var last = t[t.length - 1];
+      var lx = X(last.x), ly = Y(last.y);
+      // keep the label inside the plot area
+      var flip = lx > W - m.r - 46;
+      heads += '<g class="hit" tabindex="0" role="button" data-sym="' + s.sym +
+               '" aria-label="' + s.sym + ", " + frame().sectors[s.sym].name + ", " +
+               quadOf(last.x, last.y) + '">' +
+               '<circle cx="' + lx.toFixed(1) + '" cy="' + ly.toFixed(1) +
+               '" r="6.5" fill="' + c + '" stroke="var(--surface)" stroke-width="1.8"/>' +
+               '<text class="sym-label" x="' + (flip ? lx - 11 : lx + 11).toFixed(1) +
+               '" y="' + (ly + 4).toFixed(1) + '" text-anchor="' + (flip ? "end" : "start") +
+               '" fill="' + c + '">' + s.sym + "</text></g>";
+    });
+
+    svg.innerHTML = g + heads;
+    wireHover(svg);
+    describeChart(series);
+  }
+
+  function describeChart(series) {
+    var counts = { Leading: [], Improving: [], Weakening: [], Lagging: [] };
+    series.forEach(function (s) {
+      var p = s.tail[s.tail.length - 1];
+      counts[quadOf(p.x, p.y)].push(s.sym);
+    });
+    var parts = Object.keys(counts).filter(function (q) { return counts[q].length; })
+      .map(function (q) { return q + ": " + counts[q].join(", "); });
+    $("chart-desc").textContent =
+      "Relative rotation graph as of " + prettyDate(frame().dates[endIndex()]) + ". " + parts.join(". ") + ".";
+  }
+
+  /* ---------- tooltip ---------- */
+  function wireHover(svg) {
+    var tip = $("tooltip"), box = $("chart-box");
+    Array.prototype.forEach.call(svg.querySelectorAll(".hit"), function (node) {
+      var sym = node.getAttribute("data-sym");
+      function show(clientX, clientY) {
+        var s = lastSeries.filter(function (z) { return z.sym === sym; })[0];
+        if (!s) return;
+        var p = s.tail[s.tail.length - 1];
+        var sec = frame().sectors[sym];
+        var chgCls = sec.chg >= 0 ? "up" : "down";
+        tip.innerHTML =
+          '<div class="tt-title"><span class="sw" style="background:' + COLORS[sym] + '"></span>' +
+          sym + " &middot; " + sec.name + "</div>" +
+          '<div class="tt-row"><span>' + prettyDate(p.d) + "</span><b>" + quadOf(p.x, p.y) + "</b></div>" +
+          '<div class="tt-row"><span>RS-Ratio</span><b>' + p.x.toFixed(2) + "</b></div>" +
+          '<div class="tt-row"><span>Momentum</span><b>' + p.y.toFixed(2) + "</b></div>" +
+          '<div class="tt-row"><span>Price</span><b>' + sec.price.toFixed(2) + "</b></div>" +
+          '<div class="tt-row"><span>' + (mode === "weekly" ? "Week" : "Day") + "</span><b class=\"" +
+          chgCls + '">' + (sec.chg >= 0 ? "+" : "") + sec.chg.toFixed(2) + "%</b></div>";
+        tip.style.display = "block";
+        var r = box.getBoundingClientRect();
+        var left = clientX - r.left + 16;
+        var top = clientY - r.top + 16;
+        if (left + tip.offsetWidth > r.width) left = clientX - r.left - tip.offsetWidth - 16;
+        if (top + tip.offsetHeight > r.height) top = r.height - tip.offsetHeight - 4;
+        tip.style.left = Math.max(0, left) + "px";
+        tip.style.top = Math.max(0, top) + "px";
+      }
+      function hide() { tip.style.display = "none"; }
+      node.addEventListener("mouseenter", function (e) { show(e.clientX, e.clientY); });
+      node.addEventListener("mousemove", function (e) { show(e.clientX, e.clientY); });
+      node.addEventListener("mouseleave", hide);
+      node.addEventListener("focus", function () {
+        var r = node.getBoundingClientRect();
+        show(r.left + r.width / 2, r.top + r.height / 2);
+      });
+      node.addEventListener("blur", hide);
+      node.addEventListener("click", function () { toggle(sym); });
+      node.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(sym); }
+      });
+    });
+  }
+
+  /* ---------- legend ---------- */
+  function drawLegend() {
+    $("legend").innerHTML = SYMS.map(function (sym) {
+      var on = !hidden[sym];
+      return '<button type="button" data-sym="' + sym + '" aria-pressed="' + on + '">' +
+             '<span class="sw" style="background:' + COLORS[sym] + '"></span>' + sym + "</button>";
+    }).join("");
+    Array.prototype.forEach.call($("legend").querySelectorAll("button"), function (b) {
+      b.addEventListener("click", function () { toggle(b.getAttribute("data-sym")); });
+    });
+  }
+
+  function toggle(sym) {
+    if (hidden[sym]) delete hidden[sym]; else hidden[sym] = true;
+    $("live-status").textContent = sym + (hidden[sym] ? " hidden" : " shown");
+    writeUrlState();
+    render();
+  }
+
+  /* ---------- table ---------- */
+  function drawTable() {
+    var rows = rowsAtCursor();
+    var rewound = isRewound();
+    rows.sort(function (a, b) {
+      var d;
+      if (sortKey === "quad") d = QUAD_ORDER[a.quad] - QUAD_ORDER[b.quad] || b.x - a.x;
+      else if (sortKey === "name") d = a.sym < b.sym ? -1 : a.sym > b.sym ? 1 : 0;
+      else d = b[sortKey] - a[sortKey];
+      return d * sortDir;
+    });
+
+    $("tbody").innerHTML = rows.map(function (r) {
+      return '<tr data-sym="' + r.sym + '" class="' + (hidden[r.sym] ? "off" : "") + '">' +
+        '<td><span class="name"><span class="sw" style="background:' + COLORS[r.sym] + '"></span>' +
+        '<span class="ticker">' + r.sym + '</span> <span class="full">' + r.name + "</span></span></td>" +
+        (rewound
+          ? '<td style="color:var(--muted)">&mdash;</td><td style="color:var(--muted)">&mdash;</td>'
+          : "<td>" + r.price.toFixed(2) + "</td>" +
+            '<td class="' + (r.chg >= 0 ? "up" : "down") + '">' +
+            (r.chg >= 0 ? "+" : "") + r.chg.toFixed(2) + "%</td>") +
+        "<td>" + r.x.toFixed(2) + "</td>" +
+        "<td>" + r.y.toFixed(2) + "</td>" +
+        '<td><span class="pill ' + r.quad + '">' + r.quad + "</span></td></tr>";
+    }).join("");
+
+    Array.prototype.forEach.call($("tbody").querySelectorAll("tr"), function (tr) {
+      tr.addEventListener("click", function () { toggle(tr.getAttribute("data-sym")); });
+    });
+  }
+
+  /* ---------- tiles ---------- */
+  function drawTiles() {
+    var f = frame(), rows = rowsAtCursor();
+    var unit = mode === "weekly" ? "this week" : "today";
+
+    var bs = $("t-bench-sub");
+    if (isRewound()) {
+      $("t-bench").innerHTML = "&mdash;";
+      bs.textContent = "Rewound \u2014 price is latest close only";
+      bs.className = "sub";
+    } else {
+      $("t-bench").textContent = f.bench.price.toFixed(2);
+      bs.textContent = (f.bench.chg >= 0 ? "+" : "") + f.bench.chg.toFixed(2) + "% " + unit;
+      bs.className = "sub " + (f.bench.chg >= 0 ? "up" : "down");
+    }
+
+    var leading = rows.filter(function (r) { return r.quad === "Leading"; });
+    $("t-lead").textContent = leading.length + " of " + rows.length;
+    $("t-lead-sub").textContent = leading.length
+      ? leading.sort(function (a, b) { return b.x - a.x; }).map(function (r) { return r.sym; }).slice(0, 5).join(", ")
+      : "No sector is leading";
+
+    var byX = rows.slice().sort(function (a, b) { return b.x - a.x; });
+    var top = byX[0], bot = byX[byX.length - 1];
+    $("t-strong").textContent = top.sym;
+    $("t-strong-sub").innerHTML = top.name + " &middot; " + top.quad;
+    $("t-weak").textContent = bot.sym;
+    $("t-weak-sub").innerHTML = bot.name + " &middot; " + bot.quad;
+  }
+
+  /* ---------- render ---------- */
+  function render() {
+    var f = frame(), end = endIndex();
+    $("asof-note").textContent =
+      (mode === "weekly" ? "Week ending " : "") + prettyDate(f.dates[end]) +
+      (cursor !== null && end < f.dates.length - 1 ? " (rewound)" : "");
+    $("table-note").textContent = isRewound()
+      ? "Price and change are latest-close only, so they are hidden while rewound"
+      : "Click a row to hide that sector from the chart";
+    drawTiles();
+    draw();
+    drawLegend();
+    drawTable();
+  }
+
+  /* ---------- animation ---------- */
+  function stopAnim() {
+    if (!timer) return;
+    clearInterval(timer);
+    timer = null;
+    $("play-label").textContent = "Animate";
+    $("play").setAttribute("aria-pressed", "false");
+    $("play-icon").innerHTML = '<path d="M2 1l8 5-8 5z"/>';
+  }
+
+  function startAnim() {
+    var f = frame(), n = f.dates.length - 1;
+    cursor = cursor === null || cursor >= n ? Math.max(0, n - Math.min(26, n)) : cursor;
+    $("play-label").textContent = "Pause";
+    $("play").setAttribute("aria-pressed", "true");
+    $("play-icon").innerHTML = '<rect x="2" y="1" width="3" height="10"/><rect x="7" y="1" width="3" height="10"/>';
+    timer = setInterval(function () {
+      cursor++;
+      if (cursor >= n) { cursor = n; stopAnim(); }
+      $("scrub").value = cursor;
+      render();
+    }, 320);
+  }
+
+  /* ---------- controls ---------- */
+  function setMode(m) {
+    mode = m;
+    stopAnim();
+    cursor = null;
+    $("btn-weekly").setAttribute("aria-pressed", String(m === "weekly"));
+    $("btn-daily").setAttribute("aria-pressed", String(m === "daily"));
+    var n = frame().dates.length - 1;
+    $("scrub").max = n;
+    $("scrub").value = n;
+    writeUrlState();
+    render();
+  }
+
+  function wireControls() {
+    $("btn-weekly").addEventListener("click", function () { setMode("weekly"); });
+    $("btn-daily").addEventListener("click", function () { setMode("daily"); });
+
+    $("tail").value = tailLen;
+    $("tail-n").textContent = tailLen;
+    $("tail").addEventListener("input", function (e) {
+      tailLen = +e.target.value;
+      $("tail-n").textContent = tailLen;
+      writeUrlState();
+      render();
+    });
+
+    $("scrub").addEventListener("input", function (e) {
+      stopAnim();
+      cursor = +e.target.value;
+      render();
+    });
+
+    $("play").addEventListener("click", function () {
+      if (timer) stopAnim(); else startAnim();
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-sort]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var k = btn.getAttribute("data-sort");
+        if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = 1; }
+        Array.prototype.forEach.call(document.querySelectorAll("[data-sort]"), function (b) {
+          b.removeAttribute("data-active");
+          b.querySelector(".arrow").innerHTML = "&#9660;";
+        });
+        btn.setAttribute("data-active", "true");
+        btn.querySelector(".arrow").innerHTML = sortDir === 1 ? "&#9660;" : "&#9650;";
+        drawTable();
+      });
+    });
+
+    var ex = $("explain"), exBtn = $("explain-toggle");
+    exBtn.addEventListener("click", function () {
+      var open = ex.classList.toggle("open");
+      exBtn.setAttribute("aria-expanded", String(open));
+    });
+  }
+
+  /* ---------- share ---------- */
+  var SHARE_URL = "https://sectorrotation.joezhang.co/";
+  var SHARE_TITLE = "Sector Rotation";
+  var SHARE_TEXT = "Which S&P 500 sectors are leading, and which are rolling over? Free rotation map — no sign-up.";
+
+  function legacyCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function flash(btn, message) {
+    var label = btn.querySelector("[data-share-label]");
+    if (!label) return;
+    if (btn.dataset.original === undefined) btn.dataset.original = label.textContent;
+    label.textContent = message;
+    btn.classList.add("copied");
+    $("share-status").textContent = message;
+    clearTimeout(btn._flashTimer);
+    btn._flashTimer = setTimeout(function () {
+      label.textContent = btn.dataset.original;
+      btn.classList.remove("copied");
+    }, 2200);
+  }
+  function copyLink(btn) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(SHARE_URL).then(
+        function () { flash(btn, "Link copied"); },
+        function () { flash(btn, legacyCopy(SHARE_URL) ? "Link copied" : "Copy failed"); }
+      );
+    } else {
+      flash(btn, legacyCopy(SHARE_URL) ? "Link copied" : "Copy failed");
+    }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-share]"), function (btn) {
+    btn.addEventListener("click", function () {
+      if (navigator.share) {
+        navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: SHARE_URL })
+          .catch(function (err) {
+            if (err && err.name !== "AbortError") copyLink(btn);
+          });
+        return;
+      }
+      copyLink(btn);
+    });
+  });
+
+  /* ---------- boot ---------- */
+  function freshness() {
+    var age = daysSince(DATA.asof);
+    var el = $("freshness");
+    var txt = "Market data through <b>" + prettyDate(DATA.asof) + "</b>";
+    if (age <= 1) txt += " &middot; up to date";
+    else if (age <= 4) txt += " &middot; last close";
+    else { el.classList.add("stale"); txt += " &middot; " + age + " days old"; }
+    $("freshness-text").innerHTML = txt;
+  }
+
+  function boot(data) {
+    DATA = data;
+    Array.prototype.forEach.call(document.querySelectorAll(".bench-name"), function (n) {
+      n.textContent = DATA.benchmark;
+    });
+    $("formula").textContent = FORMULA;
+    $("foot").innerHTML =
+      "Prices are split- and dividend-adjusted closes from " + DATA.source.split(" · ")[0] +
+      ", refreshed automatically after each US market close. RS-Ratio and momentum are normalised " +
+      "against each sector's own trailing distribution, so 100 means &ldquo;in line with " +
+      DATA.benchmark + "&rdquo; and the units are standard deviations. Nothing here is investment advice.";
+    freshness();
+    $("loading").hidden = true;
+    $("loading").style.display = "none";
+    $("app").hidden = false;
+    wireControls();
+    setMode(mode);
+  }
+
+  function fail(msg) {
+    $("loading").textContent = "Couldn't load market data (" + msg + "). Please refresh in a moment.";
+    $("freshness-text").textContent = "Data unavailable";
+    $("freshness").classList.add("stale");
+  }
+
+  readUrlState();
+  fetch("data.json?v=" + Date.now())
+    .then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(boot)
+    .catch(function (e) { fail(e.message); });
+
+  var resizeTimer = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { if (DATA) draw(); }, 120);
+  });
+})();
+</script>
+
+</body>
+</html>

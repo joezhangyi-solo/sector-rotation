@@ -1,0 +1,51 @@
+name: Refresh sector data
+
+on:
+  schedule:
+    # 21:35 UTC Tue-Sat = 17:35 ET (EDT) / 16:35 ET (EST), i.e. shortly after
+    # each US close. Saturday's run picks up Friday's close during EST.
+    - cron: "35 21 * * 2-6"
+  workflow_dispatch:
+
+concurrency:
+  group: refresh-sector-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Rebuild data.json
+        run: node scripts/build-data.mjs
+
+      - name: Verify the payload looks sane
+        run: node scripts/verify-data.mjs
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- public/data.json; then
+            echo "No change in data.json — nothing to commit."
+          else
+            git add public/data.json
+            git commit -m "data: refresh through $(node -p "require('./public/data.json').asof")"
+            git push
+          fi
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JOEZHANG_TOOLS }}
+          projectId: joezhang-tools
+          target: sectorrotation
+          channelId: live
