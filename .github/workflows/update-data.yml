@@ -2,9 +2,10 @@ name: Refresh sector data
 
 on:
   schedule:
-    # 21:35 UTC Tue-Sat = 17:35 ET (EDT) / 16:35 ET (EST), i.e. shortly after
-    # each US close. Saturday's run picks up Friday's close during EST.
-    - cron: "35 21 * * 2-6"
+    # 21:35 UTC Mon-Fri is 5:35pm ET in summer / 4:35pm ET in winter, i.e.
+    # after that same day's close. The Saturday run is a safety net that
+    # re-attempts Friday's close if the Friday run failed or ran early.
+    - cron: "35 21 * * 1-6"
   workflow_dispatch:
 
 concurrency:
