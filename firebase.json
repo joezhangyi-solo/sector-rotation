@@ -10,7 +10,7 @@
       ],
       "headers": [
         {
-          "source": "/data.json",
+          "source": "/{data,industries}.json",
           "headers": [
             {
               "key": "Cache-Control",
@@ -19,7 +19,7 @@
           ]
         },
         {
-          "source": "/index.html",
+          "source": "/{index,industries}.html",
           "headers": [
             {
               "key": "Cache-Control",

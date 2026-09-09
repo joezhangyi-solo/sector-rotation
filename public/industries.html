@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sector Rotation &mdash; joezhang.co</title>
-<meta name="description" content="Free relative rotation graph for the 11 S&amp;P 500 sector SPDRs against SPY. See which sectors are leading, weakening, lagging and improving &mdash; updated every trading day.">
-<link rel="canonical" href="https://sectorrotation.joezhang.co/">
+<title>Industry Rotation &mdash; joezhang.co</title>
+<meta name="description" content="Free relative rotation graph for 20 GICS industry ETFs &mdash; one level below the S&amp;P 500 sector SPDRs. Filter by sector, benchmark against SPY or the industry's own sector, updated every trading day.">
+<link rel="canonical" href="https://sectorrotation.joezhang.co/industries.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="joezhang.co">
-<meta property="og:title" content="Sector Rotation">
-<meta property="og:description" content="Which S&amp;P 500 sectors are leading, and which are rolling over? A live relative rotation graph, updated every trading day.">
-<meta property="og:url" content="https://sectorrotation.joezhang.co/">
+<meta property="og:title" content="Industry Rotation">
+<meta property="og:description" content="Which industries are leading inside each S&amp;P 500 sector? A live relative rotation graph one level below the sector SPDRs, updated every trading day.">
+<meta property="og:url" content="https://sectorrotation.joezhang.co/industries.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MMQ4YJJKH5"></script>
@@ -246,6 +246,12 @@
   .seg button[aria-pressed="true"] { background: var(--series); color: #fff; }
   .seg button:not([aria-pressed="true"]):hover { color: var(--ink); }
 
+  select {
+    font: inherit; font-size: 13px; font-weight: 600; color: var(--ink);
+    background: var(--input-bg); border: 1px solid var(--border);
+    border-radius: 999px; padding: 6px 12px; cursor: pointer; max-width: 220px;
+  }
+
   .btn {
     display: inline-flex; align-items: center; gap: 7px;
     font: inherit; font-size: 13px; font-weight: 600; color: var(--ink);
@@ -262,7 +268,7 @@
   .ctl .num { font-size: 13px; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; min-width: 4.5ch; }
   .ctl.grow { flex: 1 1 260px; }
 
-  button:focus-visible, a:focus-visible, input:focus-visible,
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible,
   [tabindex]:focus-visible, .hit:focus-visible {
     outline: 2px solid var(--focus); outline-offset: 2px;
   }
@@ -322,9 +328,10 @@
   .table-head h2 { font-size: 15px; font-weight: 700; margin: 0; }
   .table-head .note { font-size: 12.5px; color: var(--muted); }
   .table-scroll { overflow-x: auto; border-top: 1px solid var(--border); }
-  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13px; }
+  table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 13px; }
   th, td { padding: 8px 14px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   th:first-child, td:first-child { text-align: left; }
+  th:nth-child(2), td:nth-child(2) { text-align: left; }
   thead th {
     font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--muted); border-bottom: 1px solid var(--border); background: var(--surface);
@@ -344,6 +351,7 @@
   tbody td .sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
   tbody td .ticker { font-weight: 700; }
   tbody td .full { color: var(--ink-2); }
+  tbody td .secname { color: var(--ink-2); }
   td.up { color: var(--good-text); font-weight: 600; }
   td.down { color: var(--crit-text); font-weight: 600; }
   .pill {
@@ -451,18 +459,18 @@
   <header class="app-head">
     <div class="head-row">
       <div>
-        <p class="eyebrow">S&amp;P 500 relative rotation</p>
-        <h1><span aria-hidden="true">&#129517;</span> Sector Rotation</h1>
+        <p class="eyebrow">GICS industry relative rotation</p>
+        <h1><span aria-hidden="true">&#129517;</span> Industry Rotation</h1>
       </div>
       <button class="share-btn" type="button" data-share>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"></line><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line></svg>
         <span data-share-label>Share</span>
       </button>
     </div>
-    <p class="subhead">The eleven S&amp;P 500 sector SPDRs plotted against <span class="bench-name">SPY</span>. Each tail is a path through relative strength and momentum &mdash; where a sector sits matters less than the direction it is travelling.</p>
+    <p class="subhead">Twenty GICS industry ETFs &mdash; one level below the sector SPDRs &mdash; plotted against <span class="bench-name">SPY</span> or against their own sector. Filter to a sector to watch money rotate <em>inside</em> it.</p>
     <nav class="viewnav" aria-label="View">
-      <a href="./" aria-current="page">Sectors</a>
-      <a href="industries.html">Industries</a>
+      <a href="./">Sectors</a>
+      <a href="industries.html" aria-current="page">Industries</a>
     </nav>
     <div class="freshness" id="freshness">
       <span class="dot" aria-hidden="true"></span>
@@ -495,6 +503,19 @@
     </div>
 
     <div class="controls">
+      <div class="ctl">
+        <label for="sector">Sector</label>
+        <select id="sector"></select>
+      </div>
+
+      <div class="ctl">
+        <span class="lbl" id="lbl-bench">Benchmark</span>
+        <div class="seg" role="group" aria-labelledby="lbl-bench">
+          <button type="button" id="btn-spy" aria-pressed="true">vs SPY</button>
+          <button type="button" id="btn-sec" aria-pressed="false">vs Sector</button>
+        </div>
+      </div>
+
       <div class="ctl">
         <span class="lbl" id="lbl-tf">Timeframe</span>
         <div class="seg" role="group" aria-labelledby="lbl-tf">
@@ -532,19 +553,20 @@
         <p id="chart-desc" class="visually-hidden"></p>
         <div id="tooltip" role="presentation"></div>
       </div>
-      <div class="legend" id="legend" role="group" aria-label="Show or hide sectors"></div>
+      <div class="legend" id="legend" role="group" aria-label="Show or hide industries"></div>
     </div>
 
     <div class="table-card">
       <div class="table-head">
-        <h2>Sectors at this date</h2>
-        <span class="note" id="table-note">Click a row to hide that sector from the chart</span>
+        <h2>Industries at this date</h2>
+        <span class="note" id="table-note">Click a row to hide that industry from the chart</span>
       </div>
       <div class="table-scroll">
         <table>
           <thead>
             <tr>
-              <th><button type="button" data-sort="name">Sector <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+              <th><button type="button" data-sort="name">Industry <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+              <th><button type="button" data-sort="sector">Sector <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
               <th><button type="button" data-sort="price">Price <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
               <th><button type="button" data-sort="chg">Change <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
               <th><button type="button" data-sort="x">RS-Ratio <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
@@ -564,30 +586,45 @@
       </button>
       <div class="explain-body" id="explain-body">
         <p>
-          The horizontal axis is <b>relative strength</b> &mdash; how a sector has performed against
-          <span class="bench-name">SPY</span>, normalised so that 100 is the benchmark. The vertical axis is the
-          <b>momentum of that relative strength</b>: whether the sector is gaining ground or giving it back.
-          Together they split the plane into four quadrants, and money tends to travel clockwise through them.
+          This is the same relative rotation graph as the <a href="./">sector view</a>, one level deeper.
+          The horizontal axis is <b>relative strength</b> &mdash; how an industry has performed against its
+          benchmark, normalised so that 100 is the benchmark. The vertical axis is the <b>momentum of that
+          relative strength</b>. Together they split the plane into four quadrants, and money tends to
+          travel clockwise through them.
+        </p>
+        <p>
+          The <b>benchmark toggle</b> changes the question being asked. <b>vs SPY</b> asks &ldquo;is this
+          industry beating the market?&rdquo; &mdash; useful for comparing industries across sectors.
+          <b>vs Sector</b> measures each industry against its own sector SPDR (banks against XLF,
+          semiconductors against XLK), which strips out the sector move and shows the rotation
+          <em>inside</em> the sector &mdash; the classic drill-down question.
         </p>
         <div class="quad-grid">
-          <div class="quad improve"><h3>Improving</h3><p>Still behind the index, but the gap is closing. Early money arrives here.</p></div>
-          <div class="quad lead"><h3>Leading</h3><p>Ahead of the index and still pulling away. The crowded trade.</p></div>
+          <div class="quad improve"><h3>Improving</h3><p>Still behind the benchmark, but the gap is closing. Early money arrives here.</p></div>
+          <div class="quad lead"><h3>Leading</h3><p>Ahead of the benchmark and still pulling away. The crowded trade.</p></div>
           <div class="quad lag"><h3>Lagging</h3><p>Behind and falling further behind. The waiting room.</p></div>
-          <div class="quad weaken"><h3>Weakening</h3><p>Still ahead of the index, but losing steam. Money is leaving.</p></div>
+          <div class="quad weaken"><h3>Weakening</h3><p>Still ahead of the benchmark, but losing steam. Money is leaving.</p></div>
         </div>
         <p>
-          <b>Tail</b> sets how far back each sector's path is drawn. At 1 you see only today's position;
-          longer tails show the route it took to get there, which is what tells you whether a sector is
-          arriving or leaving. <b>Animate</b> replays the last stretch of history so you can watch the
-          rotation unfold. Drag <b>Date</b> to rewind the whole chart to any past point.
+          The industries are the GICS taxonomy &mdash; the same S&amp;P classification behind the sector
+          SPDRs &mdash; proxied by the SPDR S&amp;P Select Industry ETFs (equal-weighted, so the signal is
+          the industry, not one megacap), plus GDX for gold miners and JETS for airlines.
+          Consumer Staples, Real Estate and Utilities have no investable GICS industry ETF, so they
+          appear only in the <a href="./">sector view</a>.
+        </p>
+        <p>
+          <b>Tail</b> sets how far back each industry's path is drawn. <b>Animate</b> replays the last
+          stretch of history so you can watch the rotation unfold. Drag <b>Date</b> to rewind the whole
+          chart to any past point.
         </p>
         <p>
           The maths is the standard JdK-style construction, computed from split- and dividend-adjusted closes:
         </p>
         <div class="formula" id="formula"></div>
         <p style="margin-bottom:0">
-          This is a description of price behaviour, not a recommendation. Rotation signals are noisy at the
-          edges, and a sector sitting near the centre of the chart is telling you very little.
+          This is a description of price behaviour, not a recommendation. Rotation signals are noisy at
+          the edges, and equal-weighted industry funds can drift a long way from their cap-weighted
+          sector &mdash; that drift is part of what this chart measures.
         </p>
       </div>
     </div>
@@ -623,15 +660,20 @@
   "use strict";
 
   var COLORS = {
-    XLB: "#c98a4b", XLC: "#7f7ae0", XLE: "#d4694a", XLF: "#4f9de0",
-    XLI: "#8fa2b5", XLK: "#3fbfae", XLP: "#a9b84c", XLRE: "#c96fa6",
-    XLU: "#6fb36f", XLV: "#4fa3d1", XLY: "#e0a83f"
+    XME: "#b5793c", GDX: "#e0b520",
+    XTL: "#8f7ae0",
+    XOP: "#e06a3f", XES: "#a03c2a",
+    KBE: "#4f9de0", KRE: "#235e9e", KCE: "#6ec6ee", KIE: "#8195d6",
+    XAR: "#9fb0c2", XTN: "#6a8a9c", JETS: "#48697e",
+    XSD: "#2ab3a4", XSW: "#74d0b8",
+    XBI: "#d465b1", XPH: "#9455b8", XHE: "#c2426b", XHS: "#b98ad6",
+    XRT: "#b7a23a", XHB: "#76b55c"
   };
   var SYMS = Object.keys(COLORS);
   var QUAD_ORDER = { Leading: 0, Weakening: 1, Lagging: 2, Improving: 3 };
 
   var FORMULA = [
-    "RS        = 100 x sector / SPY            (adjusted closes)",
+    "RS        = 100 x industry / benchmark     (SPY or its sector SPDR)",
     "ratioRaw  = 100 x ((EMA(RS,10) - EMA(RS,26)) / EMA(RS,26) + 1)",
     "RS-Ratio  = 100 + zscore(ratioRaw, 52w / 120d)",
     "momRaw    = 100 x ((EMA(R,f) - EMA(R,s)) / EMA(R,s) + 1)   f,s = 2,3 weekly / 2,6 daily",
@@ -640,6 +682,8 @@
 
   var DATA = null;
   var mode = "weekly";
+  var benchKey = "spy";       // "spy" | "sec"
+  var sectorFilter = "all";   // "all" or a sector symbol like "XLF"
   var tailLen = 8;
   var cursor = null;          // null = latest
   var timer = null;
@@ -655,8 +699,8 @@
     return cursor === null ? n : Math.max(0, Math.min(cursor, n));
   };
 
-  // Prices in data.json are the latest close only, so they are meaningless
-  // once the chart has been rewound to an earlier date.
+  // Prices in industries.json are the latest close only, so they are
+  // meaningless once the chart has been rewound to an earlier date.
   function isRewound() {
     return cursor !== null && cursor < frame().dates.length - 1;
   }
@@ -664,6 +708,18 @@
   function quadOf(x, y) {
     return x >= 100 ? (y >= 100 ? "Leading" : "Weakening")
                     : (y >= 100 ? "Improving" : "Lagging");
+  }
+
+  function sectorOf(sym) { return frame().industries[sym].sector; }
+  function sectorName(sec) { return DATA.sectors[sec] || sec; }
+  function activeSyms() {
+    return SYMS.filter(function (s) {
+      return frame().industries[s] &&
+             (sectorFilter === "all" || sectorOf(s) === sectorFilter);
+    });
+  }
+  function benchLabel() {
+    return benchKey === "spy" ? DATA.benchmark : "own sector";
   }
 
   /* ---------- date helpers ---------- */
@@ -683,14 +739,19 @@
   function readUrlState() {
     var p = new URLSearchParams(location.search);
     if (p.get("tf") === "daily") mode = "daily";
+    if (p.get("bench") === "sec") benchKey = "sec";
     var t = parseInt(p.get("tail"), 10);
     if (isFinite(t) && t >= 1 && t <= 20) tailLen = t;
+    var sec = p.get("sector");
+    if (sec) sectorFilter = sec; // validated after data loads
     var h = p.get("hide");
     if (h) h.split(",").forEach(function (s) { if (COLORS[s]) hidden[s] = true; });
   }
   function writeUrlState() {
     var p = new URLSearchParams();
     if (mode !== "weekly") p.set("tf", mode);
+    if (benchKey !== "spy") p.set("bench", benchKey);
+    if (sectorFilter !== "all") p.set("sector", sectorFilter);
     if (tailLen !== 8) p.set("tail", String(tailLen));
     var off = SYMS.filter(function (s) { return hidden[s]; });
     if (off.length) p.set("hide", off.join(","));
@@ -699,24 +760,32 @@
   }
 
   /* ---------- series selection ---------- */
+  function pointAt(sym, i) {
+    var f = frame();
+    var pts = f.industries[sym][benchKey];
+    var j = Math.max(0, Math.min(i, pts.length - 1));
+    return { d: f.dates[j], x: pts[j][0], y: pts[j][1] };
+  }
+
   function visibleSeries() {
-    var f = frame(), end = endIndex(), out = [];
-    SYMS.forEach(function (sym) {
-      if (hidden[sym] || !f.sectors[sym]) return;
-      var pts = f.sectors[sym].points;
-      var i = Math.min(end, pts.length - 1);
-      out.push({ sym: sym, tail: pts.slice(Math.max(0, i - tailLen + 1), i + 1) });
+    var end = endIndex(), out = [];
+    activeSyms().forEach(function (sym) {
+      if (hidden[sym]) return;
+      var tail = [];
+      for (var i = Math.max(0, end - tailLen + 1); i <= end; i++) tail.push(pointAt(sym, i));
+      out.push({ sym: sym, tail: tail });
     });
     return out;
   }
 
   function rowsAtCursor() {
     var f = frame(), end = endIndex();
-    return SYMS.filter(function (s) { return f.sectors[s]; }).map(function (sym) {
-      var sec = f.sectors[sym];
-      var p = sec.points[Math.min(end, sec.points.length - 1)];
+    return activeSyms().map(function (sym) {
+      var ind = f.industries[sym];
+      var p = pointAt(sym, end);
       return {
-        sym: sym, name: sec.name, price: sec.price, chg: sec.chg,
+        sym: sym, name: ind.name, sector: ind.sector,
+        price: ind.price, chg: ind.chg,
         x: p.x, y: p.y, quad: quadOf(p.x, p.y)
       };
     });
@@ -787,7 +856,7 @@
          '" x2="' + (W - m.r) + '" y2="' + cy.toFixed(1) + '"/>';
 
     g += '<text class="axistitle" x="' + ((m.l + W - m.r) / 2) + '" y="' + (H - 8) +
-         '" text-anchor="middle">Relative strength vs ' + DATA.benchmark + "</text>";
+         '" text-anchor="middle">Relative strength vs ' + benchLabel() + "</text>";
     g += '<text class="axistitle" transform="translate(15,' + ((m.t + H - m.b) / 2) +
          ') rotate(-90)" text-anchor="middle">Momentum of relative strength</text>';
 
@@ -811,7 +880,7 @@
       // keep the label inside the plot area
       var flip = lx > W - m.r - 46;
       heads += '<g class="hit" tabindex="0" role="button" data-sym="' + s.sym +
-               '" aria-label="' + s.sym + ", " + frame().sectors[s.sym].name + ", " +
+               '" aria-label="' + s.sym + ", " + frame().industries[s.sym].name + ", " +
                quadOf(last.x, last.y) + '">' +
                '<circle cx="' + lx.toFixed(1) + '" cy="' + ly.toFixed(1) +
                '" r="6.5" fill="' + c + '" stroke="var(--surface)" stroke-width="1.8"/>' +
@@ -834,7 +903,8 @@
     var parts = Object.keys(counts).filter(function (q) { return counts[q].length; })
       .map(function (q) { return q + ": " + counts[q].join(", "); });
     $("chart-desc").textContent =
-      "Relative rotation graph as of " + prettyDate(frame().dates[endIndex()]) + ". " + parts.join(". ") + ".";
+      "Industry relative rotation graph vs " + benchLabel() + " as of " +
+      prettyDate(frame().dates[endIndex()]) + ". " + parts.join(". ") + ".";
   }
 
   /* ---------- tooltip ---------- */
@@ -846,17 +916,18 @@
         var s = lastSeries.filter(function (z) { return z.sym === sym; })[0];
         if (!s) return;
         var p = s.tail[s.tail.length - 1];
-        var sec = frame().sectors[sym];
-        var chgCls = sec.chg >= 0 ? "up" : "down";
+        var ind = frame().industries[sym];
+        var chgCls = ind.chg >= 0 ? "up" : "down";
         tip.innerHTML =
           '<div class="tt-title"><span class="sw" style="background:' + COLORS[sym] + '"></span>' +
-          sym + " &middot; " + sec.name + "</div>" +
+          sym + " &middot; " + ind.name + "</div>" +
+          '<div class="tt-row"><span>Sector</span><b>' + sectorName(ind.sector) + "</b></div>" +
           '<div class="tt-row"><span>' + prettyDate(p.d) + "</span><b>" + quadOf(p.x, p.y) + "</b></div>" +
           '<div class="tt-row"><span>RS-Ratio</span><b>' + p.x.toFixed(2) + "</b></div>" +
           '<div class="tt-row"><span>Momentum</span><b>' + p.y.toFixed(2) + "</b></div>" +
-          '<div class="tt-row"><span>Price</span><b>' + sec.price.toFixed(2) + "</b></div>" +
+          '<div class="tt-row"><span>Price</span><b>' + ind.price.toFixed(2) + "</b></div>" +
           '<div class="tt-row"><span>' + (mode === "weekly" ? "Week" : "Day") + "</span><b class=\"" +
-          chgCls + '">' + (sec.chg >= 0 ? "+" : "") + sec.chg.toFixed(2) + "%</b></div>";
+          chgCls + '">' + (ind.chg >= 0 ? "+" : "") + ind.chg.toFixed(2) + "%</b></div>";
         tip.style.display = "block";
         var r = box.getBoundingClientRect();
         var left = clientX - r.left + 16;
@@ -884,7 +955,7 @@
 
   /* ---------- legend ---------- */
   function drawLegend() {
-    $("legend").innerHTML = SYMS.map(function (sym) {
+    $("legend").innerHTML = activeSyms().map(function (sym) {
       var on = !hidden[sym];
       return '<button type="button" data-sym="' + sym + '" aria-pressed="' + on + '">' +
              '<span class="sw" style="background:' + COLORS[sym] + '"></span>' + sym + "</button>";
@@ -909,6 +980,7 @@
       var d;
       if (sortKey === "quad") d = QUAD_ORDER[a.quad] - QUAD_ORDER[b.quad] || b.x - a.x;
       else if (sortKey === "name") d = a.sym < b.sym ? -1 : a.sym > b.sym ? 1 : 0;
+      else if (sortKey === "sector") d = a.sector < b.sector ? -1 : a.sector > b.sector ? 1 : b.x - a.x;
       else d = b[sortKey] - a[sortKey];
       return d * sortDir;
     });
@@ -917,6 +989,7 @@
       return '<tr data-sym="' + r.sym + '" class="' + (hidden[r.sym] ? "off" : "") + '">' +
         '<td><span class="name"><span class="sw" style="background:' + COLORS[r.sym] + '"></span>' +
         '<span class="ticker">' + r.sym + '</span> <span class="full">' + r.name + "</span></span></td>" +
+        '<td><span class="secname">' + sectorName(r.sector) + "</span></td>" +
         (rewound
           ? '<td style="color:var(--muted)">&mdash;</td><td style="color:var(--muted)">&mdash;</td>'
           : "<td>" + r.price.toFixed(2) + "</td>" +
@@ -940,7 +1013,7 @@
     var bs = $("t-bench-sub");
     if (isRewound()) {
       $("t-bench").innerHTML = "&mdash;";
-      bs.textContent = "Rewound \u2014 price is latest close only";
+      bs.textContent = "Rewound — price is latest close only";
       bs.className = "sub";
     } else {
       $("t-bench").textContent = f.bench.price.toFixed(2);
@@ -952,7 +1025,7 @@
     $("t-lead").textContent = leading.length + " of " + rows.length;
     $("t-lead-sub").textContent = leading.length
       ? leading.sort(function (a, b) { return b.x - a.x; }).map(function (r) { return r.sym; }).slice(0, 5).join(", ")
-      : "No sector is leading";
+      : "No industry is leading";
 
     var byX = rows.slice().sort(function (a, b) { return b.x - a.x; });
     var top = byX[0], bot = byX[byX.length - 1];
@@ -967,10 +1040,11 @@
     var f = frame(), end = endIndex();
     $("asof-note").textContent =
       (mode === "weekly" ? "Week ending " : "") + prettyDate(f.dates[end]) +
+      " · vs " + (benchKey === "spy" ? DATA.benchmark : "own sector") +
       (cursor !== null && end < f.dates.length - 1 ? " (rewound)" : "");
     $("table-note").textContent = isRewound()
       ? "Price and change are latest-close only, so they are hidden while rewound"
-      : "Click a row to hide that sector from the chart";
+      : "Click a row to hide that industry from the chart";
     drawTiles();
     draw();
     drawLegend();
@@ -1015,9 +1089,41 @@
     render();
   }
 
+  function setBench(k) {
+    benchKey = k;
+    $("btn-spy").setAttribute("aria-pressed", String(k === "spy"));
+    $("btn-sec").setAttribute("aria-pressed", String(k === "sec"));
+    writeUrlState();
+    render();
+  }
+
+  function buildSectorSelect() {
+    // Only sectors that actually have industry rows, in SECTORS order.
+    var have = {};
+    SYMS.forEach(function (s) {
+      var ind = DATA.daily.industries[s];
+      if (ind) have[ind.sector] = true;
+    });
+    var opts = ['<option value="all">All sectors</option>'];
+    Object.keys(DATA.sectors).forEach(function (sec) {
+      if (have[sec]) opts.push('<option value="' + sec + '">' + DATA.sectors[sec] + "</option>");
+    });
+    var sel = $("sector");
+    sel.innerHTML = opts.join("");
+    if (sectorFilter !== "all" && !have[sectorFilter]) sectorFilter = "all";
+    sel.value = sectorFilter;
+    sel.addEventListener("change", function () {
+      sectorFilter = sel.value;
+      writeUrlState();
+      render();
+    });
+  }
+
   function wireControls() {
     $("btn-weekly").addEventListener("click", function () { setMode("weekly"); });
     $("btn-daily").addEventListener("click", function () { setMode("daily"); });
+    $("btn-spy").addEventListener("click", function () { setBench("spy"); });
+    $("btn-sec").addEventListener("click", function () { setBench("sec"); });
 
     $("tail").value = tailLen;
     $("tail-n").textContent = tailLen;
@@ -1060,9 +1166,9 @@
   }
 
   /* ---------- share ---------- */
-  var SHARE_URL = "https://sectorrotation.joezhang.co/";
-  var SHARE_TITLE = "Sector Rotation";
-  var SHARE_TEXT = "Which S&P 500 sectors are leading, and which are rolling over? Free rotation map — no sign-up.";
+  var SHARE_URL = "https://sectorrotation.joezhang.co/industries.html";
+  var SHARE_TITLE = "Industry Rotation";
+  var SHARE_TEXT = "Which industries are leading inside each S&P 500 sector? Free rotation map, one level below the sector SPDRs — no sign-up.";
 
   function legacyCopy(text) {
     var ta = document.createElement("textarea");
@@ -1132,14 +1238,17 @@
     $("formula").textContent = FORMULA;
     $("foot").innerHTML =
       "Prices are split- and dividend-adjusted closes from " + DATA.source.split(" · ")[0] +
-      ", refreshed automatically after each US market close. RS-Ratio and momentum are normalised " +
-      "against each sector's own trailing distribution, so 100 means &ldquo;in line with " +
-      DATA.benchmark + "&rdquo; and the units are standard deviations. Nothing here is investment advice.";
+      ", refreshed automatically after each US market close. Industries follow the GICS taxonomy via " +
+      "SPDR S&amp;P Select Industry ETFs (plus GDX and JETS). RS-Ratio and momentum are normalised " +
+      "against each industry's own trailing distribution, so 100 means &ldquo;in line with the " +
+      "benchmark&rdquo; and the units are standard deviations. Nothing here is investment advice.";
     freshness();
     $("loading").hidden = true;
     $("loading").style.display = "none";
     $("app").hidden = false;
+    buildSectorSelect();
     wireControls();
+    setBench(benchKey);
     setMode(mode);
   }
 
@@ -1150,7 +1259,7 @@
   }
 
   readUrlState();
-  fetch("data.json?v=" + Date.now())
+  fetch("industries.json?v=" + Date.now())
     .then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
       return r.json();

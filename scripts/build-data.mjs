@@ -24,6 +24,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = resolve(ROOT, "public/data.json");
+const OUT_IND = resolve(ROOT, "public/industries.json");
 
 const BENCHMARK = "SPY";
 const SECTORS = {
@@ -38,6 +39,36 @@ const SECTORS = {
   XLU:  "Utilities",
   XLV:  "Health Care",
   XLY:  "Consumer Discretionary",
+};
+
+/**
+ * GICS-aligned industry ETFs, one level below the sector SPDRs. The backbone
+ * is the SPDR S&P Select Industry family (same S&P/GICS taxonomy as the
+ * sector funds, modified equal weight so the industry signal isn't one
+ * megacap); GDX and JETS fill industries that family doesn't cover.
+ * XLP, XLRE and XLU have no clean GICS industry ETF, so they have no rows.
+ */
+const INDUSTRIES = {
+  XME:  { name: "Metals & Mining",         sector: "XLB" },
+  GDX:  { name: "Gold Miners",             sector: "XLB" },
+  XTL:  { name: "Telecom",                 sector: "XLC" },
+  XOP:  { name: "Oil & Gas Exploration",   sector: "XLE" },
+  XES:  { name: "Oil & Gas Equipment",     sector: "XLE" },
+  KBE:  { name: "Banks",                   sector: "XLF" },
+  KRE:  { name: "Regional Banks",          sector: "XLF" },
+  KCE:  { name: "Capital Markets",         sector: "XLF" },
+  KIE:  { name: "Insurance",               sector: "XLF" },
+  XAR:  { name: "Aerospace & Defense",     sector: "XLI" },
+  XTN:  { name: "Transportation",          sector: "XLI" },
+  JETS: { name: "Airlines",                sector: "XLI" },
+  XSD:  { name: "Semiconductors",          sector: "XLK" },
+  XSW:  { name: "Software & Services",     sector: "XLK" },
+  XBI:  { name: "Biotech",                 sector: "XLV" },
+  XPH:  { name: "Pharmaceuticals",         sector: "XLV" },
+  XHE:  { name: "Health Care Equipment",   sector: "XLV" },
+  XHS:  { name: "Health Care Services",    sector: "XLV" },
+  XRT:  { name: "Retail",                  sector: "XLY" },
+  XHB:  { name: "Homebuilders",            sector: "XLY" },
 };
 
 // How many points of each series to publish (keeps data.json small).
@@ -207,6 +238,57 @@ function buildFrame(mode, dates, priceBy, adjBy) {
   };
 }
 
+/**
+ * Like buildFrame, but for industry ETFs, each measured against BOTH the
+ * broad benchmark and its parent sector ETF. Points are published as
+ * [x, y] pairs aligned 1:1 with the frame's date axis (the dates would
+ * otherwise dominate the payload at 20 industries x 2 benchmarks).
+ */
+function buildIndustryFrame(mode, dates, priceBy, adjBy) {
+  const p = PARAMS[mode];
+  const keep = KEEP[mode];
+
+  const computed = {};
+  let firstUsable = 0;
+
+  for (const [sym, meta] of Object.entries(INDUSTRIES)) {
+    computed[sym] = {};
+    for (const [key, bench] of [["spy", BENCHMARK], ["sec", meta.sector]]) {
+      const rs = dates.map((d) => (100 * adjBy[sym][d]) / adjBy[bench][d]);
+      const { ratio, mom } = rrg(rs, p);
+      const first = ratio.findIndex((v, i) => v !== null && mom[i] !== null);
+      if (first < 0) throw new Error(`${sym}: not enough history for ${mode} industry RRG`);
+      firstUsable = Math.max(firstUsable, first);
+      computed[sym][key] = { ratio, mom };
+    }
+  }
+
+  const start = Math.max(firstUsable, dates.length - keep);
+  const axis = dates.slice(start);
+
+  const industries = {};
+  for (const [sym, meta] of Object.entries(INDUSTRIES)) {
+    const ind = { name: meta.name, sector: meta.sector };
+    for (const key of ["spy", "sec"]) {
+      const { ratio, mom } = computed[sym][key];
+      ind[key] = axis.map((_, j) => [round3(ratio[start + j]), round3(mom[start + j])]);
+    }
+    ind.price = round2(priceBy[sym][axis.at(-1)]);
+    ind.chg = round2(pctChange(priceBy[sym], axis));
+    industries[sym] = ind;
+  }
+
+  return {
+    dates: axis,
+    asof: axis.at(-1),
+    bench: {
+      price: round2(priceBy[BENCHMARK][axis.at(-1)]),
+      chg: round2(pctChange(priceBy[BENCHMARK], axis)),
+    },
+    industries,
+  };
+}
+
 /** Percent change across the final period of the axis (week-over-week or day-over-day). */
 function pctChange(prices, axis) {
   const last = prices[axis.at(-1)];
@@ -215,8 +297,21 @@ function pctChange(prices, axis) {
   return (100 * (last - prev)) / prev;
 }
 
+/** Dates every listed symbol traded on — guards against a single ETF's gap
+ *  silently shifting one series against the others. */
+function commonDates(series, symbols) {
+  let common = series[BENCHMARK].map((r) => r.d);
+  for (const s of symbols) {
+    const have = new Set(series[s].map((r) => r.d));
+    common = common.filter((d) => have.has(d));
+  }
+  return common.sort();
+}
+
 async function main() {
-  const symbols = [BENCHMARK, ...Object.keys(SECTORS)];
+  const sectorSyms = [BENCHMARK, ...Object.keys(SECTORS)];
+  const industrySyms = Object.keys(INDUSTRIES);
+  const symbols = [...sectorSyms, ...industrySyms];
   console.log(`Fetching ${symbols.length} symbols from Yahoo Finance…`);
 
   const series = {};
@@ -226,15 +321,13 @@ async function main() {
     await sleep(250);
   }
 
-  // Only dates every symbol traded on — guards against a single ETF's gap
-  // silently shifting one series against the others.
-  let common = series[BENCHMARK].map((r) => r.d);
-  for (const s of symbols) {
-    const have = new Set(series[s].map((r) => r.d));
-    common = common.filter((d) => have.has(d));
-  }
-  common.sort();
+  // The sector axis intersects only sector symbols, so the existing product
+  // never shrinks because one industry ETF skipped a day; the industry axis
+  // intersects everything it plots (industries plus their benchmarks).
+  const common = commonDates(series, sectorSyms);
+  const commonInd = commonDates(series, symbols);
   console.log(`${common.length} common trading days: ${common[0]} → ${common.at(-1)}`);
+  console.log(`${commonInd.length} shared with industry ETFs`);
 
   const adjBy = {};
   const priceBy = {};
@@ -259,6 +352,23 @@ async function main() {
   await writeFile(OUT, JSON.stringify(payload));
   const kb = (JSON.stringify(payload).length / 1024).toFixed(0);
   console.log(`Wrote ${OUT} (${kb} KB) — as of ${payload.asof}`);
+
+  const weeklyInd = buildIndustryFrame("weekly", weeklyDates(commonInd), priceBy, adjBy);
+  const dailyInd = buildIndustryFrame("daily", commonInd, priceBy, adjBy);
+
+  const indPayload = {
+    benchmark: BENCHMARK,
+    generated: payload.generated,
+    asof: dailyInd.asof,
+    source: payload.source,
+    sectors: SECTORS,
+    weekly: weeklyInd,
+    daily: dailyInd,
+  };
+
+  await writeFile(OUT_IND, JSON.stringify(indPayload));
+  const kbInd = (JSON.stringify(indPayload).length / 1024).toFixed(0);
+  console.log(`Wrote ${OUT_IND} (${kbInd} KB) — as of ${indPayload.asof}`);
 }
 
 main().catch((err) => {

@@ -1,17 +1,33 @@
 # Sector Rotation
 
-Relative rotation graph for the eleven S&P 500 sector SPDRs against SPY.
+Relative rotation graph for the eleven S&P 500 sector SPDRs against SPY,
+plus an industry drill-down one GICS level deeper.
 Live at **https://sectorrotation.joezhang.co**
 
 ## Layout
 
 ```
-public/index.html        the whole app — no build step, no dependencies
-public/data.json         generated market data (committed, deployed as-is)
-scripts/build-data.mjs   fetches Yahoo Finance and recomputes data.json
+public/index.html        sector view — no build step, no dependencies
+public/industries.html   industry drill-down (sector filter, SPY/sector benchmark)
+public/data.json         generated sector data (committed, deployed as-is)
+public/industries.json   generated industry data (committed, deployed as-is)
+scripts/build-data.mjs   fetches Yahoo Finance and recomputes both payloads
 scripts/verify-data.mjs  refuses to ship a stale or malformed payload
 archive/                 the original one-off HTML this replaced
 ```
+
+## Industries
+
+One level below the sectors sit 20 GICS-aligned industry ETFs. The backbone
+is the SPDR S&P Select Industry family (the same S&P/GICS taxonomy as the
+sector SPDRs, modified equal weight so the signal is the industry rather than
+one megacap), plus GDX (gold miners) and JETS (airlines) where that family
+has no fund. Consumer Staples, Real Estate and Utilities have no clean GICS
+industry ETF and so have no drill-down rows.
+
+Each industry's RRG is computed against **both** SPY and its parent sector
+SPDR; the page toggles between the two. `industries.json` stores points as
+`[x, y]` pairs aligned to the frame's date axis to keep the payload small.
 
 ## Daily refresh
 
