@@ -1,0 +1,2517 @@
+[
+ {
+  "ticker": "MMM",
+  "sector": "XLI",
+  "sub": "Industrial Conglomerates"
+ },
+ {
+  "ticker": "AOS",
+  "sector": "XLI",
+  "sub": "Building Products"
+ },
+ {
+  "ticker": "ABT",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "ABBV",
+  "sector": "XLV",
+  "sub": "Biotechnology"
+ },
+ {
+  "ticker": "ACN",
+  "sector": "XLK",
+  "sub": "IT Consulting & Other Services"
+ },
+ {
+  "ticker": "ADBE",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "AMD",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "AES",
+  "sector": "XLU",
+  "sub": "Independent Power Producers & Energy Traders"
+ },
+ {
+  "ticker": "AFL",
+  "sector": "XLF",
+  "sub": "Life & Health Insurance"
+ },
+ {
+  "ticker": "A",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
+ },
+ {
+  "ticker": "APD",
+  "sector": "XLB",
+  "sub": "Industrial Gases"
+ },
+ {
+  "ticker": "ABNB",
+  "sector": "XLY",
+  "sub": "Hotels, Resorts & Cruise Lines"
+ },
+ {
+  "ticker": "AKAM",
+  "sector": "XLK",
+  "sub": "Internet Services & Infrastructure"
+ },
+ {
+  "ticker": "ALB",
+  "sector": "XLB",
+  "sub": "Specialty Chemicals"
+ },
+ {
+  "ticker": "ARE",
+  "sector": "XLRE",
+  "sub": "Office REITs"
+ },
+ {
+  "ticker": "ALGN",
+  "sector": "XLV",
+  "sub": "Health Care Supplies"
+ },
+ {
+  "ticker": "ALLE",
+  "sector": "XLI",
+  "sub": "Building Products"
+ },
+ {
+  "ticker": "LNT",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "ALL",
+  "sector": "XLF",
+  "sub": "Property & Casualty Insurance"
+ },
+ {
+  "ticker": "GOOGL",
+  "sector": "XLC",
+  "sub": "Interactive Media & Services"
+ },
+ {
+  "ticker": "GOOG",
+  "sector": "XLC",
+  "sub": "Interactive Media & Services"
+ },
+ {
+  "ticker": "MO",
+  "sector": "XLP",
+  "sub": "Tobacco"
+ },
+ {
+  "ticker": "AMZN",
+  "sector": "XLY",
+  "sub": "Broadline Retail"
+ },
+ {
+  "ticker": "AMCR",
+  "sector": "XLB",
+  "sub": "Paper & Plastic Packaging Products & Materials"
+ },
+ {
+  "ticker": "AEE",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "AEP",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "AXP",
+  "sector": "XLF",
+  "sub": "Consumer Finance"
+ },
+ {
+  "ticker": "AIG",
+  "sector": "XLF",
+  "sub": "Multi-line Insurance"
+ },
+ {
+  "ticker": "AMT",
+  "sector": "XLRE",
+  "sub": "Telecom Tower REITs"
+ },
+ {
+  "ticker": "AWK",
+  "sector": "XLU",
+  "sub": "Water Utilities"
+ },
+ {
+  "ticker": "AMP",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "AME",
+  "sector": "XLI",
+  "sub": "Electrical Components & Equipment"
+ },
+ {
+  "ticker": "AMGN",
+  "sector": "XLV",
+  "sub": "Biotechnology"
+ },
+ {
+  "ticker": "APH",
+  "sector": "XLK",
+  "sub": "Electronic Components"
+ },
+ {
+  "ticker": "ADI",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "AON",
+  "sector": "XLF",
+  "sub": "Insurance Brokers"
+ },
+ {
+  "ticker": "APA",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "APO",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "AAPL",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "AMAT",
+  "sector": "XLK",
+  "sub": "Semiconductor Materials & Equipment"
+ },
+ {
+  "ticker": "APP",
+  "sector": "XLC",
+  "sub": "Advertising"
+ },
+ {
+  "ticker": "APTV",
+  "sector": "XLY",
+  "sub": "Automotive Parts & Equipment"
+ },
+ {
+  "ticker": "ACGL",
+  "sector": "XLF",
+  "sub": "Property & Casualty Insurance"
+ },
+ {
+  "ticker": "ADM",
+  "sector": "XLP",
+  "sub": "Agricultural Products & Services"
+ },
+ {
+  "ticker": "ARES",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "ANET",
+  "sector": "XLK",
+  "sub": "Communications Equipment"
+ },
+ {
+  "ticker": "AJG",
+  "sector": "XLF",
+  "sub": "Insurance Brokers"
+ },
+ {
+  "ticker": "AIZ",
+  "sector": "XLF",
+  "sub": "Multi-line Insurance"
+ },
+ {
+  "ticker": "T",
+  "sector": "XLC",
+  "sub": "Integrated Telecommunication Services"
+ },
+ {
+  "ticker": "ATO",
+  "sector": "XLU",
+  "sub": "Gas Utilities"
+ },
+ {
+  "ticker": "ADSK",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "ADP",
+  "sector": "XLI",
+  "sub": "Human Resource & Employment Services"
+ },
+ {
+  "ticker": "AZO",
+  "sector": "XLY",
+  "sub": "Automotive Retail"
+ },
+ {
+  "ticker": "AVY",
+  "sector": "XLB",
+  "sub": "Paper & Plastic Packaging Products & Materials"
+ },
+ {
+  "ticker": "AXON",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "BKR",
+  "sector": "XLE",
+  "sub": "Oil & Gas Equipment & Services"
+ },
+ {
+  "ticker": "BALL",
+  "sector": "XLB",
+  "sub": "Metal, Glass & Plastic Containers"
+ },
+ {
+  "ticker": "BAC",
+  "sector": "XLF",
+  "sub": "Diversified Banks"
+ },
+ {
+  "ticker": "BAX",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "BDX",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "BRK-B",
+  "sector": "XLF",
+  "sub": "Multi-Sector Holdings"
+ },
+ {
+  "ticker": "BBY",
+  "sector": "XLY",
+  "sub": "Computer & Electronics Retail"
+ },
+ {
+  "ticker": "TECH",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
+ },
+ {
+  "ticker": "BIIB",
+  "sector": "XLV",
+  "sub": "Biotechnology"
+ },
+ {
+  "ticker": "BLK",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "BX",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "XYZ",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "BNY",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "BA",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "BKNG",
+  "sector": "XLY",
+  "sub": "Hotels, Resorts & Cruise Lines"
+ },
+ {
+  "ticker": "BSX",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "BMY",
+  "sector": "XLV",
+  "sub": "Pharmaceuticals"
+ },
+ {
+  "ticker": "AVGO",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "BR",
+  "sector": "XLI",
+  "sub": "Data Processing & Outsourced Services"
+ },
+ {
+  "ticker": "BRO",
+  "sector": "XLF",
+  "sub": "Insurance Brokers"
+ },
+ {
+  "ticker": "BF-B",
+  "sector": "XLP",
+  "sub": "Distillers & Vintners"
+ },
+ {
+  "ticker": "BLDR",
+  "sector": "XLI",
+  "sub": "Building Products"
+ },
+ {
+  "ticker": "BG",
+  "sector": "XLP",
+  "sub": "Agricultural Products & Services"
+ },
+ {
+  "ticker": "BXP",
+  "sector": "XLRE",
+  "sub": "Office REITs"
+ },
+ {
+  "ticker": "CHRW",
+  "sector": "XLI",
+  "sub": "Air Freight & Logistics"
+ },
+ {
+  "ticker": "CDNS",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "CPT",
+  "sector": "XLRE",
+  "sub": "Multi-Family Residential REITs"
+ },
+ {
+  "ticker": "COF",
+  "sector": "XLF",
+  "sub": "Consumer Finance"
+ },
+ {
+  "ticker": "CAH",
+  "sector": "XLV",
+  "sub": "Health Care Distributors"
+ },
+ {
+  "ticker": "CCL",
+  "sector": "XLY",
+  "sub": "Hotels, Resorts & Cruise Lines"
+ },
+ {
+  "ticker": "CARR",
+  "sector": "XLI",
+  "sub": "Building Products"
+ },
+ {
+  "ticker": "CVNA",
+  "sector": "XLY",
+  "sub": "Automotive Retail"
+ },
+ {
+  "ticker": "CASY",
+  "sector": "XLP",
+  "sub": "Food Retail"
+ },
+ {
+  "ticker": "CAT",
+  "sector": "XLI",
+  "sub": "Construction Machinery & Heavy Transportation Equipment"
+ },
+ {
+  "ticker": "CBOE",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "CBRE",
+  "sector": "XLRE",
+  "sub": "Real Estate Services"
+ },
+ {
+  "ticker": "CDW",
+  "sector": "XLK",
+  "sub": "Technology Distributors"
+ },
+ {
+  "ticker": "COR",
+  "sector": "XLV",
+  "sub": "Health Care Distributors"
+ },
+ {
+  "ticker": "CNC",
+  "sector": "XLV",
+  "sub": "Managed Health Care"
+ },
+ {
+  "ticker": "CNP",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "CF",
+  "sector": "XLB",
+  "sub": "Fertilizers & Agricultural Chemicals"
+ },
+ {
+  "ticker": "CRL",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
+ },
+ {
+  "ticker": "SCHW",
+  "sector": "XLF",
+  "sub": "Investment Banking & Brokerage"
+ },
+ {
+  "ticker": "CHTR",
+  "sector": "XLC",
+  "sub": "Cable & Satellite"
+ },
+ {
+  "ticker": "CVX",
+  "sector": "XLE",
+  "sub": "Integrated Oil & Gas"
+ },
+ {
+  "ticker": "CMG",
+  "sector": "XLY",
+  "sub": "Restaurants"
+ },
+ {
+  "ticker": "CB",
+  "sector": "XLF",
+  "sub": "Property & Casualty Insurance"
+ },
+ {
+  "ticker": "CHD",
+  "sector": "XLP",
+  "sub": "Household Products"
+ },
+ {
+  "ticker": "CIEN",
+  "sector": "XLK",
+  "sub": "Communications Equipment"
+ },
+ {
+  "ticker": "CI",
+  "sector": "XLV",
+  "sub": "Health Care Services"
+ },
+ {
+  "ticker": "CINF",
+  "sector": "XLF",
+  "sub": "Property & Casualty Insurance"
+ },
+ {
+  "ticker": "CTAS",
+  "sector": "XLI",
+  "sub": "Diversified Support Services"
+ },
+ {
+  "ticker": "CSCO",
+  "sector": "XLK",
+  "sub": "Communications Equipment"
+ },
+ {
+  "ticker": "C",
+  "sector": "XLF",
+  "sub": "Diversified Banks"
+ },
+ {
+  "ticker": "CFG",
+  "sector": "XLF",
+  "sub": "Regional Banks"
+ },
+ {
+  "ticker": "CLX",
+  "sector": "XLP",
+  "sub": "Household Products"
+ },
+ {
+  "ticker": "CME",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "CMS",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "KO",
+  "sector": "XLP",
+  "sub": "Soft Drinks & Non-alcoholic Beverages"
+ },
+ {
+  "ticker": "CTSH",
+  "sector": "XLK",
+  "sub": "IT Consulting & Other Services"
+ },
+ {
+  "ticker": "COHR",
+  "sector": "XLK",
+  "sub": "Electronic Components"
+ },
+ {
+  "ticker": "COIN",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "CL",
+  "sector": "XLP",
+  "sub": "Household Products"
+ },
+ {
+  "ticker": "CMCSA",
+  "sector": "XLC",
+  "sub": "Cable & Satellite"
+ },
+ {
+  "ticker": "FIX",
+  "sector": "XLI",
+  "sub": "Construction & Engineering"
+ },
+ {
+  "ticker": "COP",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "ED",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "STZ",
+  "sector": "XLP",
+  "sub": "Distillers & Vintners"
+ },
+ {
+  "ticker": "CEG",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "COO",
+  "sector": "XLV",
+  "sub": "Health Care Supplies"
+ },
+ {
+  "ticker": "CPRT",
+  "sector": "XLI",
+  "sub": "Diversified Support Services"
+ },
+ {
+  "ticker": "GLW",
+  "sector": "XLK",
+  "sub": "Electronic Components"
+ },
+ {
+  "ticker": "CPAY",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "CTVA",
+  "sector": "XLB",
+  "sub": "Fertilizers & Agricultural Chemicals"
+ },
+ {
+  "ticker": "CSGP",
+  "sector": "XLRE",
+  "sub": "Real Estate Services"
+ },
+ {
+  "ticker": "COST",
+  "sector": "XLP",
+  "sub": "Consumer Staples Merchandise Retail"
+ },
+ {
+  "ticker": "CRH",
+  "sector": "XLB",
+  "sub": "Construction Materials"
+ },
+ {
+  "ticker": "CRWD",
+  "sector": "XLK",
+  "sub": "Systems Software"
+ },
+ {
+  "ticker": "CCI",
+  "sector": "XLRE",
+  "sub": "Telecom Tower REITs"
+ },
+ {
+  "ticker": "CSX",
+  "sector": "XLI",
+  "sub": "Rail Transportation"
+ },
+ {
+  "ticker": "CMI",
+  "sector": "XLI",
+  "sub": "Construction Machinery & Heavy Transportation Equipment"
+ },
+ {
+  "ticker": "CVS",
+  "sector": "XLV",
+  "sub": "Health Care Services"
+ },
+ {
+  "ticker": "DHR",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
+ },
+ {
+  "ticker": "DRI",
+  "sector": "XLY",
+  "sub": "Restaurants"
+ },
+ {
+  "ticker": "DDOG",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "DVA",
+  "sector": "XLV",
+  "sub": "Health Care Services"
+ },
+ {
+  "ticker": "DECK",
+  "sector": "XLY",
+  "sub": "Footwear"
+ },
+ {
+  "ticker": "DE",
+  "sector": "XLI",
+  "sub": "Agricultural & Farm Machinery"
+ },
+ {
+  "ticker": "DELL",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "DAL",
+  "sector": "XLI",
+  "sub": "Passenger Airlines"
+ },
+ {
+  "ticker": "DVN",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "DXCM",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "FANG",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "DLR",
+  "sector": "XLRE",
+  "sub": "Data Center REITs"
+ },
+ {
+  "ticker": "DG",
+  "sector": "XLP",
+  "sub": "Consumer Staples Merchandise Retail"
+ },
+ {
+  "ticker": "DLTR",
+  "sector": "XLP",
+  "sub": "Consumer Staples Merchandise Retail"
+ },
+ {
+  "ticker": "D",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "DPZ",
+  "sector": "XLY",
+  "sub": "Restaurants"
+ },
+ {
+  "ticker": "DASH",
+  "sector": "XLY",
+  "sub": "Specialized Consumer Services"
+ },
+ {
+  "ticker": "DOV",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "DOW",
+  "sector": "XLB",
+  "sub": "Commodity Chemicals"
+ },
+ {
+  "ticker": "DHI",
+  "sector": "XLY",
+  "sub": "Homebuilding"
+ },
+ {
+  "ticker": "DTE",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "DUK",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "DD",
+  "sector": "XLI",
+  "sub": "Industrial Conglomerates"
+ },
+ {
+  "ticker": "ETN",
+  "sector": "XLI",
+  "sub": "Electrical Components & Equipment"
+ },
+ {
+  "ticker": "EBAY",
+  "sector": "XLY",
+  "sub": "Broadline Retail"
+ },
+ {
+  "ticker": "ECHO",
+  "sector": "XLC",
+  "sub": "Wireless Telecommunication Services"
+ },
+ {
+  "ticker": "ECL",
+  "sector": "XLB",
+  "sub": "Specialty Chemicals"
+ },
+ {
+  "ticker": "EIX",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "EW",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "ELV",
+  "sector": "XLV",
+  "sub": "Managed Health Care"
+ },
+ {
+  "ticker": "EME",
+  "sector": "XLI",
+  "sub": "Construction & Engineering"
+ },
+ {
+  "ticker": "EMR",
+  "sector": "XLI",
+  "sub": "Electrical Components & Equipment"
+ },
+ {
+  "ticker": "ETR",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "EOG",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "EQT",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "EFX",
+  "sector": "XLI",
+  "sub": "Research & Consulting Services"
+ },
+ {
+  "ticker": "EQIX",
+  "sector": "XLRE",
+  "sub": "Data Center REITs"
+ },
+ {
+  "ticker": "ERIE",
+  "sector": "XLF",
+  "sub": "Insurance Brokers"
+ },
+ {
+  "ticker": "ESS",
+  "sector": "XLRE",
+  "sub": "Multi-Family Residential REITs"
+ },
+ {
+  "ticker": "EL",
+  "sector": "XLP",
+  "sub": "Personal Care Products"
+ },
+ {
+  "ticker": "EG",
+  "sector": "XLF",
+  "sub": "Reinsurance"
+ },
+ {
+  "ticker": "EVRG",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "ES",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "EXC",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "EXE",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "EXPE",
+  "sector": "XLY",
+  "sub": "Hotels, Resorts & Cruise Lines"
+ },
+ {
+  "ticker": "EXPD",
+  "sector": "XLI",
+  "sub": "Air Freight & Logistics"
+ },
+ {
+  "ticker": "EXR",
+  "sector": "XLRE",
+  "sub": "Self-Storage REITs"
+ },
+ {
+  "ticker": "XOM",
+  "sector": "XLE",
+  "sub": "Integrated Oil & Gas"
+ },
+ {
+  "ticker": "FFIV",
+  "sector": "XLK",
+  "sub": "Communications Equipment"
+ },
+ {
+  "ticker": "FDS",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "FICO",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "FAST",
+  "sector": "XLI",
+  "sub": "Trading Companies & Distributors"
+ },
+ {
+  "ticker": "FRT",
+  "sector": "XLRE",
+  "sub": "Retail REITs"
+ },
+ {
+  "ticker": "FDX",
+  "sector": "XLI",
+  "sub": "Air Freight & Logistics"
+ },
+ {
+  "ticker": "FDXF",
+  "sector": "XLI",
+  "sub": "Cargo Ground Transportation"
+ },
+ {
+  "ticker": "FERG",
+  "sector": "XLI",
+  "sub": "Trading Companies & Distributors"
+ },
+ {
+  "ticker": "FIS",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "FITB",
+  "sector": "XLF",
+  "sub": "Regional Banks"
+ },
+ {
+  "ticker": "FSLR",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "FE",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "FISV",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "FLEX",
+  "sector": "XLK",
+  "sub": "Electronic Manufacturing Services"
+ },
+ {
+  "ticker": "F",
+  "sector": "XLY",
+  "sub": "Automobile Manufacturers"
+ },
+ {
+  "ticker": "FTNT",
+  "sector": "XLK",
+  "sub": "Systems Software"
+ },
+ {
+  "ticker": "FTV",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "FOXA",
+  "sector": "XLC",
+  "sub": "Broadcasting"
+ },
+ {
+  "ticker": "FOX",
+  "sector": "XLC",
+  "sub": "Broadcasting"
+ },
+ {
+  "ticker": "BEN",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "FCX",
+  "sector": "XLB",
+  "sub": "Copper"
+ },
+ {
+  "ticker": "GRMN",
+  "sector": "XLY",
+  "sub": "Consumer Electronics"
+ },
+ {
+  "ticker": "IT",
+  "sector": "XLK",
+  "sub": "IT Consulting & Other Services"
+ },
+ {
+  "ticker": "GE",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "GEHC",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "GEV",
+  "sector": "XLI",
+  "sub": "Heavy Electrical Equipment"
+ },
+ {
+  "ticker": "GEN",
+  "sector": "XLK",
+  "sub": "Systems Software"
+ },
+ {
+  "ticker": "GNRC",
+  "sector": "XLI",
+  "sub": "Heavy Electrical Equipment"
+ },
+ {
+  "ticker": "GD",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "GIS",
+  "sector": "XLP",
+  "sub": "Packaged Foods & Meats"
+ },
+ {
+  "ticker": "GM",
+  "sector": "XLY",
+  "sub": "Automobile Manufacturers"
+ },
+ {
+  "ticker": "GPC",
+  "sector": "XLY",
+  "sub": "Distributors"
+ },
+ {
+  "ticker": "GILD",
+  "sector": "XLV",
+  "sub": "Biotechnology"
+ },
+ {
+  "ticker": "GPN",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "GL",
+  "sector": "XLF",
+  "sub": "Life & Health Insurance"
+ },
+ {
+  "ticker": "GDDY",
+  "sector": "XLK",
+  "sub": "Internet Services & Infrastructure"
+ },
+ {
+  "ticker": "GS",
+  "sector": "XLF",
+  "sub": "Investment Banking & Brokerage"
+ },
+ {
+  "ticker": "HAL",
+  "sector": "XLE",
+  "sub": "Oil & Gas Equipment & Services"
+ },
+ {
+  "ticker": "HIG",
+  "sector": "XLF",
+  "sub": "Property & Casualty Insurance"
+ },
+ {
+  "ticker": "HAS",
+  "sector": "XLY",
+  "sub": "Leisure Products"
+ },
+ {
+  "ticker": "HCA",
+  "sector": "XLV",
+  "sub": "Health Care Facilities"
+ },
+ {
+  "ticker": "DOC",
+  "sector": "XLRE",
+  "sub": "Health Care REITs"
+ },
+ {
+  "ticker": "HSIC",
+  "sector": "XLV",
+  "sub": "Health Care Distributors"
+ },
+ {
+  "ticker": "HSY",
+  "sector": "XLP",
+  "sub": "Packaged Foods & Meats"
+ },
+ {
+  "ticker": "HPE",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "HLT",
+  "sector": "XLY",
+  "sub": "Hotels, Resorts & Cruise Lines"
+ },
+ {
+  "ticker": "HD",
+  "sector": "XLY",
+  "sub": "Home Improvement Retail"
+ },
+ {
+  "ticker": "HONA",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "HON",
+  "sector": "XLI",
+  "sub": "Industrial Conglomerates"
+ },
+ {
+  "ticker": "HRL",
+  "sector": "XLP",
+  "sub": "Packaged Foods & Meats"
+ },
+ {
+  "ticker": "HST",
+  "sector": "XLRE",
+  "sub": "Hotel & Resort REITs"
+ },
+ {
+  "ticker": "HWM",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "HPQ",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "HUBB",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "HUM",
+  "sector": "XLV",
+  "sub": "Managed Health Care"
+ },
+ {
+  "ticker": "HBAN",
+  "sector": "XLF",
+  "sub": "Regional Banks"
+ },
+ {
+  "ticker": "HII",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "IBM",
+  "sector": "XLK",
+  "sub": "IT Consulting & Other Services"
+ },
+ {
+  "ticker": "IEX",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "IDXX",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "ITW",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "INCY",
+  "sector": "XLV",
+  "sub": "Biotechnology"
+ },
+ {
+  "ticker": "IR",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "PODD",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "INTC",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "IBKR",
+  "sector": "XLF",
+  "sub": "Investment Banking & Brokerage"
+ },
+ {
+  "ticker": "ICE",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "IFF",
+  "sector": "XLB",
+  "sub": "Specialty Chemicals"
+ },
+ {
+  "ticker": "IP",
+  "sector": "XLB",
+  "sub": "Paper & Plastic Packaging Products & Materials"
+ },
+ {
+  "ticker": "INTU",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "ISRG",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "IVZ",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "INVH",
+  "sector": "XLRE",
+  "sub": "Single-Family Residential REITs"
+ },
+ {
+  "ticker": "IQV",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
+ },
+ {
+  "ticker": "IRM",
+  "sector": "XLRE",
+  "sub": "Other Specialized REITs"
+ },
+ {
+  "ticker": "JBHT",
+  "sector": "XLI",
+  "sub": "Cargo Ground Transportation"
+ },
+ {
+  "ticker": "JBL",
+  "sector": "XLK",
+  "sub": "Electronic Manufacturing Services"
+ },
+ {
+  "ticker": "JKHY",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "J",
+  "sector": "XLI",
+  "sub": "Construction & Engineering"
+ },
+ {
+  "ticker": "JNJ",
+  "sector": "XLV",
+  "sub": "Pharmaceuticals"
+ },
+ {
+  "ticker": "JCI",
+  "sector": "XLI",
+  "sub": "Building Products"
+ },
+ {
+  "ticker": "JPM",
+  "sector": "XLF",
+  "sub": "Diversified Banks"
+ },
+ {
+  "ticker": "KVUE",
+  "sector": "XLP",
+  "sub": "Personal Care Products"
+ },
+ {
+  "ticker": "KDP",
+  "sector": "XLP",
+  "sub": "Soft Drinks & Non-alcoholic Beverages"
+ },
+ {
+  "ticker": "KEY",
+  "sector": "XLF",
+  "sub": "Regional Banks"
+ },
+ {
+  "ticker": "KEYS",
+  "sector": "XLK",
+  "sub": "Electronic Equipment & Instruments"
+ },
+ {
+  "ticker": "KMB",
+  "sector": "XLP",
+  "sub": "Household Products"
+ },
+ {
+  "ticker": "KIM",
+  "sector": "XLRE",
+  "sub": "Retail REITs"
+ },
+ {
+  "ticker": "KMI",
+  "sector": "XLE",
+  "sub": "Oil & Gas Storage & Transportation"
+ },
+ {
+  "ticker": "KKR",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "KLAC",
+  "sector": "XLK",
+  "sub": "Semiconductor Materials & Equipment"
+ },
+ {
+  "ticker": "KHC",
+  "sector": "XLP",
+  "sub": "Packaged Foods & Meats"
+ },
+ {
+  "ticker": "KR",
+  "sector": "XLP",
+  "sub": "Food Retail"
+ },
+ {
+  "ticker": "LHX",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "LH",
+  "sector": "XLV",
+  "sub": "Health Care Services"
+ },
+ {
+  "ticker": "LRCX",
+  "sector": "XLK",
+  "sub": "Semiconductor Materials & Equipment"
+ },
+ {
+  "ticker": "LVS",
+  "sector": "XLY",
+  "sub": "Casinos & Gaming"
+ },
+ {
+  "ticker": "LDOS",
+  "sector": "XLI",
+  "sub": "Diversified Support Services"
+ },
+ {
+  "ticker": "LEN",
+  "sector": "XLY",
+  "sub": "Homebuilding"
+ },
+ {
+  "ticker": "LII",
+  "sector": "XLI",
+  "sub": "Building Products"
+ },
+ {
+  "ticker": "LLY",
+  "sector": "XLV",
+  "sub": "Pharmaceuticals"
+ },
+ {
+  "ticker": "LIN",
+  "sector": "XLB",
+  "sub": "Industrial Gases"
+ },
+ {
+  "ticker": "LYV",
+  "sector": "XLC",
+  "sub": "Movies & Entertainment"
+ },
+ {
+  "ticker": "LMT",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "L",
+  "sector": "XLF",
+  "sub": "Multi-line Insurance"
+ },
+ {
+  "ticker": "LOW",
+  "sector": "XLY",
+  "sub": "Home Improvement Retail"
+ },
+ {
+  "ticker": "LULU",
+  "sector": "XLY",
+  "sub": "Apparel, Accessories & Luxury Goods"
+ },
+ {
+  "ticker": "LITE",
+  "sector": "XLK",
+  "sub": "Communications Equipment"
+ },
+ {
+  "ticker": "LYB",
+  "sector": "XLB",
+  "sub": "Specialty Chemicals"
+ },
+ {
+  "ticker": "MTB",
+  "sector": "XLF",
+  "sub": "Regional Banks"
+ },
+ {
+  "ticker": "MPC",
+  "sector": "XLE",
+  "sub": "Oil & Gas Refining & Marketing"
+ },
+ {
+  "ticker": "MAR",
+  "sector": "XLY",
+  "sub": "Hotels, Resorts & Cruise Lines"
+ },
+ {
+  "ticker": "MRSH",
+  "sector": "XLF",
+  "sub": "Insurance Brokers"
+ },
+ {
+  "ticker": "MLM",
+  "sector": "XLB",
+  "sub": "Construction Materials"
+ },
+ {
+  "ticker": "MRVL",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "MAS",
+  "sector": "XLI",
+  "sub": "Building Products"
+ },
+ {
+  "ticker": "MA",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "MKC",
+  "sector": "XLP",
+  "sub": "Packaged Foods & Meats"
+ },
+ {
+  "ticker": "MCD",
+  "sector": "XLY",
+  "sub": "Restaurants"
+ },
+ {
+  "ticker": "MCK",
+  "sector": "XLV",
+  "sub": "Health Care Distributors"
+ },
+ {
+  "ticker": "MDT",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "MRK",
+  "sector": "XLV",
+  "sub": "Pharmaceuticals"
+ },
+ {
+  "ticker": "META",
+  "sector": "XLC",
+  "sub": "Interactive Media & Services"
+ },
+ {
+  "ticker": "MET",
+  "sector": "XLF",
+  "sub": "Life & Health Insurance"
+ },
+ {
+  "ticker": "MTD",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
+ },
+ {
+  "ticker": "MGM",
+  "sector": "XLY",
+  "sub": "Casinos & Gaming"
+ },
+ {
+  "ticker": "MCHP",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "MU",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "MSFT",
+  "sector": "XLK",
+  "sub": "Systems Software"
+ },
+ {
+  "ticker": "MAA",
+  "sector": "XLRE",
+  "sub": "Multi-Family Residential REITs"
+ },
+ {
+  "ticker": "MRNA",
+  "sector": "XLV",
+  "sub": "Biotechnology"
+ },
+ {
+  "ticker": "TAP",
+  "sector": "XLP",
+  "sub": "Brewers"
+ },
+ {
+  "ticker": "MDLZ",
+  "sector": "XLP",
+  "sub": "Packaged Foods & Meats"
+ },
+ {
+  "ticker": "MPWR",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "MNST",
+  "sector": "XLP",
+  "sub": "Soft Drinks & Non-alcoholic Beverages"
+ },
+ {
+  "ticker": "MCO",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "MS",
+  "sector": "XLF",
+  "sub": "Investment Banking & Brokerage"
+ },
+ {
+  "ticker": "MOS",
+  "sector": "XLB",
+  "sub": "Fertilizers & Agricultural Chemicals"
+ },
+ {
+  "ticker": "MSI",
+  "sector": "XLK",
+  "sub": "Communications Equipment"
+ },
+ {
+  "ticker": "MSCI",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "NDAQ",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "NTAP",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "NFLX",
+  "sector": "XLC",
+  "sub": "Movies & Entertainment"
+ },
+ {
+  "ticker": "NEM",
+  "sector": "XLB",
+  "sub": "Gold"
+ },
+ {
+  "ticker": "NWSA",
+  "sector": "XLC",
+  "sub": "Publishing"
+ },
+ {
+  "ticker": "NWS",
+  "sector": "XLC",
+  "sub": "Publishing"
+ },
+ {
+  "ticker": "NEE",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "NKE",
+  "sector": "XLY",
+  "sub": "Apparel, Accessories & Luxury Goods"
+ },
+ {
+  "ticker": "NI",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "NDSN",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "NSC",
+  "sector": "XLI",
+  "sub": "Rail Transportation"
+ },
+ {
+  "ticker": "NTRS",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "NOC",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "NCLH",
+  "sector": "XLY",
+  "sub": "Hotels, Resorts & Cruise Lines"
+ },
+ {
+  "ticker": "NRG",
+  "sector": "XLU",
+  "sub": "Independent Power Producers & Energy Traders"
+ },
+ {
+  "ticker": "NUE",
+  "sector": "XLB",
+  "sub": "Steel"
+ },
+ {
+  "ticker": "NVDA",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "NVR",
+  "sector": "XLY",
+  "sub": "Homebuilding"
+ },
+ {
+  "ticker": "NXPI",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "ORLY",
+  "sector": "XLY",
+  "sub": "Automotive Retail"
+ },
+ {
+  "ticker": "OXY",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "ODFL",
+  "sector": "XLI",
+  "sub": "Cargo Ground Transportation"
+ },
+ {
+  "ticker": "OMC",
+  "sector": "XLC",
+  "sub": "Advertising"
+ },
+ {
+  "ticker": "ON",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "OKE",
+  "sector": "XLE",
+  "sub": "Oil & Gas Storage & Transportation"
+ },
+ {
+  "ticker": "ORCL",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "OTIS",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "PCAR",
+  "sector": "XLI",
+  "sub": "Construction Machinery & Heavy Transportation Equipment"
+ },
+ {
+  "ticker": "PKG",
+  "sector": "XLB",
+  "sub": "Paper & Plastic Packaging Products & Materials"
+ },
+ {
+  "ticker": "PLTR",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "PANW",
+  "sector": "XLK",
+  "sub": "Systems Software"
+ },
+ {
+  "ticker": "PSKY",
+  "sector": "XLC",
+  "sub": "Movies & Entertainment"
+ },
+ {
+  "ticker": "PH",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "PAYX",
+  "sector": "XLI",
+  "sub": "Human Resource & Employment Services"
+ },
+ {
+  "ticker": "PYPL",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "PNR",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "PEP",
+  "sector": "XLP",
+  "sub": "Soft Drinks & Non-alcoholic Beverages"
+ },
+ {
+  "ticker": "PFE",
+  "sector": "XLV",
+  "sub": "Pharmaceuticals"
+ },
+ {
+  "ticker": "PCG",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "PM",
+  "sector": "XLP",
+  "sub": "Tobacco"
+ },
+ {
+  "ticker": "PSX",
+  "sector": "XLE",
+  "sub": "Oil & Gas Refining & Marketing"
+ },
+ {
+  "ticker": "PNW",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "PNC",
+  "sector": "XLF",
+  "sub": "Diversified Banks"
+ },
+ {
+  "ticker": "PPG",
+  "sector": "XLB",
+  "sub": "Specialty Chemicals"
+ },
+ {
+  "ticker": "PPL",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "PFG",
+  "sector": "XLF",
+  "sub": "Life & Health Insurance"
+ },
+ {
+  "ticker": "PG",
+  "sector": "XLP",
+  "sub": "Personal Care Products"
+ },
+ {
+  "ticker": "PGR",
+  "sector": "XLF",
+  "sub": "Property & Casualty Insurance"
+ },
+ {
+  "ticker": "PLD",
+  "sector": "XLRE",
+  "sub": "Industrial REITs"
+ },
+ {
+  "ticker": "PRU",
+  "sector": "XLF",
+  "sub": "Life & Health Insurance"
+ },
+ {
+  "ticker": "PEG",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "PTC",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "PSA",
+  "sector": "XLRE",
+  "sub": "Self-Storage REITs"
+ },
+ {
+  "ticker": "PHM",
+  "sector": "XLY",
+  "sub": "Homebuilding"
+ },
+ {
+  "ticker": "PWR",
+  "sector": "XLI",
+  "sub": "Construction & Engineering"
+ },
+ {
+  "ticker": "QCOM",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "DGX",
+  "sector": "XLV",
+  "sub": "Health Care Services"
+ },
+ {
+  "ticker": "Q",
+  "sector": "XLK",
+  "sub": "Semiconductor Materials & Equipment"
+ },
+ {
+  "ticker": "RL",
+  "sector": "XLY",
+  "sub": "Apparel, Accessories & Luxury Goods"
+ },
+ {
+  "ticker": "RJF",
+  "sector": "XLF",
+  "sub": "Investment Banking & Brokerage"
+ },
+ {
+  "ticker": "RDDT",
+  "sector": "XLC",
+  "sub": "Interactive Media & Services"
+ },
+ {
+  "ticker": "RTX",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "O",
+  "sector": "XLRE",
+  "sub": "Retail REITs"
+ },
+ {
+  "ticker": "REG",
+  "sector": "XLRE",
+  "sub": "Retail REITs"
+ },
+ {
+  "ticker": "REGN",
+  "sector": "XLV",
+  "sub": "Biotechnology"
+ },
+ {
+  "ticker": "RF",
+  "sector": "XLF",
+  "sub": "Regional Banks"
+ },
+ {
+  "ticker": "RSG",
+  "sector": "XLI",
+  "sub": "Environmental & Facilities Services"
+ },
+ {
+  "ticker": "RMD",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "RVTY",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "HOOD",
+  "sector": "XLF",
+  "sub": "Investment Banking & Brokerage"
+ },
+ {
+  "ticker": "ROK",
+  "sector": "XLI",
+  "sub": "Electrical Components & Equipment"
+ },
+ {
+  "ticker": "ROL",
+  "sector": "XLI",
+  "sub": "Environmental & Facilities Services"
+ },
+ {
+  "ticker": "ROP",
+  "sector": "XLK",
+  "sub": "Electronic Equipment & Instruments"
+ },
+ {
+  "ticker": "ROST",
+  "sector": "XLY",
+  "sub": "Apparel Retail"
+ },
+ {
+  "ticker": "RCL",
+  "sector": "XLY",
+  "sub": "Hotels, Resorts & Cruise Lines"
+ },
+ {
+  "ticker": "SPGI",
+  "sector": "XLF",
+  "sub": "Financial Exchanges & Data"
+ },
+ {
+  "ticker": "CRM",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "SNDK",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "SBAC",
+  "sector": "XLRE",
+  "sub": "Telecom Tower REITs"
+ },
+ {
+  "ticker": "SLB",
+  "sector": "XLE",
+  "sub": "Oil & Gas Equipment & Services"
+ },
+ {
+  "ticker": "STX",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "SRE",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "NOW",
+  "sector": "XLK",
+  "sub": "Systems Software"
+ },
+ {
+  "ticker": "SHW",
+  "sector": "XLB",
+  "sub": "Specialty Chemicals"
+ },
+ {
+  "ticker": "SPG",
+  "sector": "XLRE",
+  "sub": "Retail REITs"
+ },
+ {
+  "ticker": "SWKS",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "SJM",
+  "sector": "XLP",
+  "sub": "Packaged Foods & Meats"
+ },
+ {
+  "ticker": "SW",
+  "sector": "XLB",
+  "sub": "Paper & Plastic Packaging Products & Materials"
+ },
+ {
+  "ticker": "SNA",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "SOLV",
+  "sector": "XLV",
+  "sub": "Health Care Technology"
+ },
+ {
+  "ticker": "SO",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "LUV",
+  "sector": "XLI",
+  "sub": "Passenger Airlines"
+ },
+ {
+  "ticker": "SWK",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "SBUX",
+  "sector": "XLY",
+  "sub": "Restaurants"
+ },
+ {
+  "ticker": "STT",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "STLD",
+  "sector": "XLB",
+  "sub": "Steel"
+ },
+ {
+  "ticker": "STE",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "SYK",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "SMCI",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "SYF",
+  "sector": "XLF",
+  "sub": "Consumer Finance"
+ },
+ {
+  "ticker": "SNPS",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "SYY",
+  "sector": "XLP",
+  "sub": "Food Distributors"
+ },
+ {
+  "ticker": "TMUS",
+  "sector": "XLC",
+  "sub": "Wireless Telecommunication Services"
+ },
+ {
+  "ticker": "TROW",
+  "sector": "XLF",
+  "sub": "Asset Management & Custody Banks"
+ },
+ {
+  "ticker": "TTWO",
+  "sector": "XLC",
+  "sub": "Interactive Home Entertainment"
+ },
+ {
+  "ticker": "TPR",
+  "sector": "XLY",
+  "sub": "Apparel, Accessories & Luxury Goods"
+ },
+ {
+  "ticker": "TRGP",
+  "sector": "XLE",
+  "sub": "Oil & Gas Storage & Transportation"
+ },
+ {
+  "ticker": "TGT",
+  "sector": "XLP",
+  "sub": "Consumer Staples Merchandise Retail"
+ },
+ {
+  "ticker": "TEL",
+  "sector": "XLK",
+  "sub": "Electronic Manufacturing Services"
+ },
+ {
+  "ticker": "TDY",
+  "sector": "XLK",
+  "sub": "Electronic Equipment & Instruments"
+ },
+ {
+  "ticker": "TER",
+  "sector": "XLK",
+  "sub": "Semiconductor Materials & Equipment"
+ },
+ {
+  "ticker": "TSLA",
+  "sector": "XLY",
+  "sub": "Automobile Manufacturers"
+ },
+ {
+  "ticker": "TXN",
+  "sector": "XLK",
+  "sub": "Semiconductors"
+ },
+ {
+  "ticker": "TPL",
+  "sector": "XLE",
+  "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "TXT",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "TMO",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
+ },
+ {
+  "ticker": "TJX",
+  "sector": "XLY",
+  "sub": "Apparel Retail"
+ },
+ {
+  "ticker": "TKO",
+  "sector": "XLC",
+  "sub": "Movies & Entertainment"
+ },
+ {
+  "ticker": "TTD",
+  "sector": "XLC",
+  "sub": "Advertising"
+ },
+ {
+  "ticker": "TSCO",
+  "sector": "XLY",
+  "sub": "Other Specialty Retail"
+ },
+ {
+  "ticker": "TT",
+  "sector": "XLI",
+  "sub": "Building Products"
+ },
+ {
+  "ticker": "TDG",
+  "sector": "XLI",
+  "sub": "Aerospace & Defense"
+ },
+ {
+  "ticker": "TRV",
+  "sector": "XLF",
+  "sub": "Property & Casualty Insurance"
+ },
+ {
+  "ticker": "TRMB",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "TFC",
+  "sector": "XLF",
+  "sub": "Diversified Banks"
+ },
+ {
+  "ticker": "TYL",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "TSN",
+  "sector": "XLP",
+  "sub": "Packaged Foods & Meats"
+ },
+ {
+  "ticker": "USB",
+  "sector": "XLF",
+  "sub": "Diversified Banks"
+ },
+ {
+  "ticker": "UBER",
+  "sector": "XLI",
+  "sub": "Passenger Ground Transportation"
+ },
+ {
+  "ticker": "UDR",
+  "sector": "XLRE",
+  "sub": "Multi-Family Residential REITs"
+ },
+ {
+  "ticker": "ULTA",
+  "sector": "XLY",
+  "sub": "Other Specialty Retail"
+ },
+ {
+  "ticker": "UNP",
+  "sector": "XLI",
+  "sub": "Rail Transportation"
+ },
+ {
+  "ticker": "UAL",
+  "sector": "XLI",
+  "sub": "Passenger Airlines"
+ },
+ {
+  "ticker": "UPS",
+  "sector": "XLI",
+  "sub": "Air Freight & Logistics"
+ },
+ {
+  "ticker": "URI",
+  "sector": "XLI",
+  "sub": "Trading Companies & Distributors"
+ },
+ {
+  "ticker": "UNH",
+  "sector": "XLV",
+  "sub": "Managed Health Care"
+ },
+ {
+  "ticker": "UHS",
+  "sector": "XLV",
+  "sub": "Health Care Facilities"
+ },
+ {
+  "ticker": "VLO",
+  "sector": "XLE",
+  "sub": "Oil & Gas Refining & Marketing"
+ },
+ {
+  "ticker": "VEEV",
+  "sector": "XLV",
+  "sub": "Health Care Technology"
+ },
+ {
+  "ticker": "VTR",
+  "sector": "XLRE",
+  "sub": "Health Care REITs"
+ },
+ {
+  "ticker": "VLTO",
+  "sector": "XLI",
+  "sub": "Environmental & Facilities Services"
+ },
+ {
+  "ticker": "VRSN",
+  "sector": "XLK",
+  "sub": "Internet Services & Infrastructure"
+ },
+ {
+  "ticker": "VRSK",
+  "sector": "XLI",
+  "sub": "Research & Consulting Services"
+ },
+ {
+  "ticker": "VZ",
+  "sector": "XLC",
+  "sub": "Integrated Telecommunication Services"
+ },
+ {
+  "ticker": "VRTX",
+  "sector": "XLV",
+  "sub": "Biotechnology"
+ },
+ {
+  "ticker": "VRT",
+  "sector": "XLI",
+  "sub": "Electrical Components & Equipment"
+ },
+ {
+  "ticker": "VTRS",
+  "sector": "XLV",
+  "sub": "Pharmaceuticals"
+ },
+ {
+  "ticker": "VICI",
+  "sector": "XLRE",
+  "sub": "Hotel & Resort REITs"
+ },
+ {
+  "ticker": "V",
+  "sector": "XLF",
+  "sub": "Transaction & Payment Processing Services"
+ },
+ {
+  "ticker": "VST",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "VMRK",
+  "sector": "XLRE",
+  "sub": "Multi-Family Residential REITs"
+ },
+ {
+  "ticker": "VMC",
+  "sector": "XLB",
+  "sub": "Construction Materials"
+ },
+ {
+  "ticker": "WRB",
+  "sector": "XLF",
+  "sub": "Property & Casualty Insurance"
+ },
+ {
+  "ticker": "GWW",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "WAB",
+  "sector": "XLI",
+  "sub": "Construction Machinery & Heavy Transportation Equipment"
+ },
+ {
+  "ticker": "WMT",
+  "sector": "XLP",
+  "sub": "Consumer Staples Merchandise Retail"
+ },
+ {
+  "ticker": "DIS",
+  "sector": "XLC",
+  "sub": "Movies & Entertainment"
+ },
+ {
+  "ticker": "WBD",
+  "sector": "XLC",
+  "sub": "Broadcasting"
+ },
+ {
+  "ticker": "WM",
+  "sector": "XLI",
+  "sub": "Environmental & Facilities Services"
+ },
+ {
+  "ticker": "WAT",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
+ },
+ {
+  "ticker": "WEC",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
+ },
+ {
+  "ticker": "WFC",
+  "sector": "XLF",
+  "sub": "Diversified Banks"
+ },
+ {
+  "ticker": "WELL",
+  "sector": "XLRE",
+  "sub": "Health Care REITs"
+ },
+ {
+  "ticker": "WST",
+  "sector": "XLV",
+  "sub": "Health Care Supplies"
+ },
+ {
+  "ticker": "WDC",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
+  "ticker": "WY",
+  "sector": "XLRE",
+  "sub": "Timber REITs"
+ },
+ {
+  "ticker": "WSM",
+  "sector": "XLY",
+  "sub": "Homefurnishing Retail"
+ },
+ {
+  "ticker": "WMB",
+  "sector": "XLE",
+  "sub": "Oil & Gas Storage & Transportation"
+ },
+ {
+  "ticker": "WTW",
+  "sector": "XLF",
+  "sub": "Insurance Brokers"
+ },
+ {
+  "ticker": "WDAY",
+  "sector": "XLK",
+  "sub": "Application Software"
+ },
+ {
+  "ticker": "WYNN",
+  "sector": "XLY",
+  "sub": "Casinos & Gaming"
+ },
+ {
+  "ticker": "XEL",
+  "sector": "XLU",
+  "sub": "Multi-Utilities"
+ },
+ {
+  "ticker": "XYL",
+  "sector": "XLI",
+  "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "YUM",
+  "sector": "XLY",
+  "sub": "Restaurants"
+ },
+ {
+  "ticker": "ZBRA",
+  "sector": "XLK",
+  "sub": "Electronic Equipment & Instruments"
+ },
+ {
+  "ticker": "ZBH",
+  "sector": "XLV",
+  "sub": "Health Care Equipment"
+ },
+ {
+  "ticker": "ZTS",
+  "sector": "XLV",
+  "sub": "Pharmaceuticals"
+ }
+]

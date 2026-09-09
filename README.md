@@ -7,27 +7,39 @@ Live at **https://sectorrotation.joezhang.co**
 ## Layout
 
 ```
-public/index.html        sector view — no build step, no dependencies
-public/industries.html   industry drill-down (sector filter, SPY/sector benchmark)
-public/data.json         generated sector data (committed, deployed as-is)
-public/industries.json   generated industry data (committed, deployed as-is)
-scripts/build-data.mjs   fetches Yahoo Finance and recomputes both payloads
-scripts/verify-data.mjs  refuses to ship a stale or malformed payload
-archive/                 the original one-off HTML this replaced
+public/index.html               sector view — no build step, no dependencies
+public/industries.html          industry drill-down (sector filter, SPY/sector benchmark)
+public/data.json                generated sector data (committed, deployed as-is)
+public/industries.json          generated industry data (committed, deployed as-is)
+scripts/build-data.mjs          fetches Yahoo Finance and recomputes both payloads
+scripts/verify-data.mjs         refuses to ship a stale or malformed payload
+scripts/sp500-constituents.json snapshot of the index membership (auto-refreshed)
+archive/                        the original one-off HTML this replaced
 ```
 
 ## Industries
 
-One level below the sectors sit 20 GICS-aligned industry ETFs. The backbone
-is the SPDR S&P Select Industry family (the same S&P/GICS taxonomy as the
-sector SPDRs, modified equal weight so the signal is the industry rather than
-one megacap), plus GDX (gold miners) and JETS (airlines) where that family
-has no fund. Consumer Staples, Real Estate and Utilities have no clean GICS
-industry ETF and so have no drill-down rows.
+The drill-down covers **every GICS sub-industry in the S&P 500** (~127 of
+them), computed bottom-up from the constituents: the membership and each
+stock's GICS classification come from Wikipedia's constituent list (with the
+committed snapshot as fallback if that fetch fails), and each sub-industry
+becomes an equal-weight composite of its members' dividend-adjusted daily
+returns. Equal weighting keeps the signal "the industry" rather than one
+megacap; some sub-industries have a single index member, and the member
+count is shown in the UI. Membership is today's index, so long tails carry a
+touch of survivorship bias.
 
 Each industry's RRG is computed against **both** SPY and its parent sector
 SPDR; the page toggles between the two. `industries.json` stores points as
-`[x, y]` pairs aligned to the frame's date axis to keep the payload small.
+`[x, y]` pairs aligned to the frame's date axis, with per-industry metadata
+(name, sector, members) held once at the top level, to keep the payload
+manageable (~1.2 MB raw, ~300 KB over the wire).
+
+The refresh fetches ~515 symbols from Yahoo one at a time with backoff, so
+the workflow takes a few minutes; a handful of unfetchable stocks (fresh
+listings below 60 bars) are skipped, but more than 10 failures aborts the
+run rather than shipping thin composites. `SR_CACHE=<dir>` caches raw
+fetches between local runs.
 
 ## Daily refresh
 

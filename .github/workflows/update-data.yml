@@ -34,10 +34,10 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- public/data.json public/industries.json; then
+          if git diff --quiet -- public/data.json public/industries.json scripts/sp500-constituents.json; then
             echo "No change in data payloads — nothing to commit."
           else
-            git add public/data.json public/industries.json
+            git add public/data.json public/industries.json scripts/sp500-constituents.json
             git commit -m "data: refresh through $(node -p "require('./public/data.json').asof")"
             git push
           fi

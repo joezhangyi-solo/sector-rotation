@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Industry Rotation &mdash; joezhang.co</title>
-<meta name="description" content="Free relative rotation graph for 20 GICS industry ETFs &mdash; one level below the S&amp;P 500 sector SPDRs. Filter by sector, benchmark against SPY or the industry's own sector, updated every trading day.">
+<meta name="description" content="Free relative rotation graph for every GICS sub-industry in the S&amp;P 500 &mdash; 120+ industries computed from the index constituents. Filter by sector, benchmark against SPY or the industry's own sector, updated every trading day.">
 <link rel="canonical" href="https://sectorrotation.joezhang.co/industries.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="joezhang.co">
 <meta property="og:title" content="Industry Rotation">
-<meta property="og:description" content="Which industries are leading inside each S&amp;P 500 sector? A live relative rotation graph one level below the sector SPDRs, updated every trading day.">
+<meta property="og:description" content="Which industries are leading inside each S&amp;P 500 sector? A live relative rotation graph for every GICS sub-industry, updated every trading day.">
 <meta property="og:url" content="https://sectorrotation.joezhang.co/industries.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
@@ -467,7 +467,7 @@
         <span data-share-label>Share</span>
       </button>
     </div>
-    <p class="subhead">Twenty GICS industry ETFs &mdash; one level below the sector SPDRs &mdash; plotted against <span class="bench-name">SPY</span> or against their own sector. Filter to a sector to watch money rotate <em>inside</em> it.</p>
+    <p class="subhead">Every GICS sub-industry in the S&amp;P 500 &mdash; 120+ equal-weight composites built from the index constituents &mdash; plotted against <span class="bench-name">SPY</span> or against their own sector. Filter to a sector to watch money rotate <em>inside</em> it.</p>
     <nav class="viewnav" aria-label="View">
       <a href="./">Sectors</a>
       <a href="industries.html" aria-current="page">Industries</a>
@@ -567,7 +567,7 @@
             <tr>
               <th><button type="button" data-sort="name">Industry <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
               <th><button type="button" data-sort="sector">Sector <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
-              <th><button type="button" data-sort="price">Price <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
+              <th><button type="button" data-sort="n">Members <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
               <th><button type="button" data-sort="chg">Change <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
               <th><button type="button" data-sort="x">RS-Ratio <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
               <th><button type="button" data-sort="y">Momentum <span class="arrow" aria-hidden="true">&#9660;</span></button></th>
@@ -606,11 +606,13 @@
           <div class="quad weaken"><h3>Weakening</h3><p>Still ahead of the benchmark, but losing steam. Money is leaving.</p></div>
         </div>
         <p>
-          The industries are the GICS taxonomy &mdash; the same S&amp;P classification behind the sector
-          SPDRs &mdash; proxied by the SPDR S&amp;P Select Industry ETFs (equal-weighted, so the signal is
-          the industry, not one megacap), plus GDX for gold miners and JETS for airlines.
-          Consumer Staples, Real Estate and Utilities have no investable GICS industry ETF, so they
-          appear only in the <a href="./">sector view</a>.
+          The industries are <b>GICS sub-industries</b> &mdash; the same S&amp;P classification behind the
+          sector SPDRs, at its most granular level. Each one is an equal-weight composite of the
+          S&amp;P 500 members classified into it, built from their dividend-adjusted daily returns, so
+          the signal is the industry rather than one megacap. Small groups exist &mdash; a few
+          sub-industries have a single index member &mdash; and the member count is shown in the table;
+          read one-stock industries as that stock. Membership is today's index, so long tails carry a
+          touch of survivorship.
         </p>
         <p>
           <b>Tail</b> sets how far back each industry's path is drawn. <b>Animate</b> replays the last
@@ -659,17 +661,16 @@
 (function () {
   "use strict";
 
-  var COLORS = {
-    XME: "#b5793c", GDX: "#e0b520",
-    XTL: "#8f7ae0",
-    XOP: "#e06a3f", XES: "#a03c2a",
-    KBE: "#4f9de0", KRE: "#235e9e", KCE: "#6ec6ee", KIE: "#8195d6",
-    XAR: "#9fb0c2", XTN: "#6a8a9c", JETS: "#48697e",
-    XSD: "#2ab3a4", XSW: "#74d0b8",
-    XBI: "#d465b1", XPH: "#9455b8", XHE: "#c2426b", XHS: "#b98ad6",
-    XRT: "#b7a23a", XHB: "#76b55c"
+  // In the all-sectors view industries wear their sector's colour (same
+  // palette as the sector page) so the cloud reads as sector families; a
+  // filtered view assigns each industry its own colour instead.
+  var SECTOR_COLORS = {
+    XLB: "#c98a4b", XLC: "#7f7ae0", XLE: "#d4694a", XLF: "#4f9de0",
+    XLI: "#8fa2b5", XLK: "#3fbfae", XLP: "#a9b84c", XLRE: "#c96fa6",
+    XLU: "#6fb36f", XLV: "#4fa3d1", XLY: "#e0a83f"
   };
-  var SYMS = Object.keys(COLORS);
+  var SYMS = [];            // industry slugs, set once data loads
+  var LABEL_LIMIT = 24;     // beyond this many visible series, heads lose text labels
   var QUAD_ORDER = { Leading: 0, Weakening: 1, Lagging: 2, Improving: 3 };
 
   var FORMULA = [
@@ -710,16 +711,56 @@
                     : (y >= 100 ? "Improving" : "Lagging");
   }
 
-  function sectorOf(sym) { return frame().industries[sym].sector; }
+  function meta(sym) { return DATA.industries[sym]; }
   function sectorName(sec) { return DATA.sectors[sec] || sec; }
   function activeSyms() {
     return SYMS.filter(function (s) {
       return frame().industries[s] &&
-             (sectorFilter === "all" || sectorOf(s) === sectorFilter);
+             (sectorFilter === "all" || meta(s).sector === sectorFilter);
     });
   }
   function benchLabel() {
     return benchKey === "spy" ? DATA.benchmark : "own sector";
+  }
+
+  /* ---------- colours & labels ---------- */
+  var colorMap = {};
+  function rebuildColors() {
+    colorMap = {};
+    var act = activeSyms();
+    if (sectorFilter === "all") {
+      act.forEach(function (s) { colorMap[s] = SECTOR_COLORS[meta(s).sector]; });
+    } else {
+      act.forEach(function (s, i) {
+        var h = (i * 137.508) % 360;
+        colorMap[s] = "hsl(" + h.toFixed(1) + ", 55%, " + (i % 2 ? 42 : 56) + "%)";
+      });
+    }
+  }
+  function colorOf(sym) { return colorMap[sym] || SECTOR_COLORS[meta(sym).sector]; }
+
+  // Compact labels for chart heads; the table and tooltip keep full names.
+  var ABBR = {
+    "Services": "Svcs", "Equipment": "Equip", "Products": "Prods",
+    "Transportation": "Transport", "Telecommunication": "Telecom",
+    "Management": "Mgmt", "Technology": "Tech", "Components": "Comps",
+    "Pharmaceuticals": "Pharma", "Semiconductors": "Semis", "Semiconductor": "Semi",
+    "Infrastructure": "Infra", "Machinery": "Mach", "Insurance": "Ins",
+    "Environmental": "Env", "Construction": "Constr", "Exploration": "Expl",
+    "Production": "Prod", "Materials": "Mats", "Merchandise": "Merch",
+    "Residential": "Resid", "Specialized": "Spec", "Specialty": "Spec",
+    "Electronic": "Elec", "Electrical": "Elec", "Agricultural": "Ag",
+    "Entertainment": "Entmt", "Manufacturing": "Mfg", "Independent": "Indep",
+    "Distributors": "Distr", "Processing": "Proc", "Consulting": "Consult"
+  };
+  function shortName(name) {
+    var s = name
+      .replace(/^Oil & Gas/, "O&G")
+      .replace(/^Health Care/, "HC")
+      .replace(/, Storage & Peripherals$/, "")
+      .replace(/ & Supplies & Components$/, "")
+      .split(" ").map(function (w) { return ABBR[w] || w; }).join(" ");
+    return s.length > 26 ? s.slice(0, 25).replace(/[ ,&]+$/, "") + "…" : s;
   }
 
   /* ---------- date helpers ---------- */
@@ -745,7 +786,7 @@
     var sec = p.get("sector");
     if (sec) sectorFilter = sec; // validated after data loads
     var h = p.get("hide");
-    if (h) h.split(",").forEach(function (s) { if (COLORS[s]) hidden[s] = true; });
+    if (h) h.split(",").forEach(function (s) { hidden[s] = true; }); // validated in boot
   }
   function writeUrlState() {
     var p = new URLSearchParams();
@@ -781,11 +822,11 @@
   function rowsAtCursor() {
     var f = frame(), end = endIndex();
     return activeSyms().map(function (sym) {
-      var ind = f.industries[sym];
+      var m = meta(sym);
       var p = pointAt(sym, end);
       return {
-        sym: sym, name: ind.name, sector: ind.sector,
-        price: ind.price, chg: ind.chg,
+        sym: sym, name: m.name, sector: m.sector, n: m.members.length,
+        chg: f.industries[sym].chg,
         x: p.x, y: p.y, quad: quadOf(p.x, p.y)
       };
     });
@@ -860,10 +901,13 @@
     g += '<text class="axistitle" transform="translate(15,' + ((m.t + H - m.b) / 2) +
          ') rotate(-90)" text-anchor="middle">Momentum of relative strength</text>';
 
-    // tails, then heads on top
+    // tails, then heads on top; with the whole market on screen the text
+    // labels come off and the heads shrink so the cloud stays readable
+    var labelled = series.length <= LABEL_LIMIT;
+    var headR = labelled ? 6.5 : 4.5;
     var heads = "";
     series.forEach(function (s) {
-      var c = COLORS[s.sym], t = s.tail;
+      var c = colorOf(s.sym), t = s.tail;
       if (t.length > 1) {
         var d = t.map(function (p, i) {
           return (i ? "L" : "M") + X(p.x).toFixed(1) + " " + Y(p.y).toFixed(1);
@@ -877,16 +921,19 @@
       }
       var last = t[t.length - 1];
       var lx = X(last.x), ly = Y(last.y);
+      var name = meta(s.sym).name;
       // keep the label inside the plot area
-      var flip = lx > W - m.r - 46;
+      var flip = lx > (W - m.l - m.r) * 0.62 + m.l;
       heads += '<g class="hit" tabindex="0" role="button" data-sym="' + s.sym +
-               '" aria-label="' + s.sym + ", " + frame().industries[s.sym].name + ", " +
-               quadOf(last.x, last.y) + '">' +
+               '" aria-label="' + name + ", " + quadOf(last.x, last.y) + '">' +
                '<circle cx="' + lx.toFixed(1) + '" cy="' + ly.toFixed(1) +
-               '" r="6.5" fill="' + c + '" stroke="var(--surface)" stroke-width="1.8"/>' +
-               '<text class="sym-label" x="' + (flip ? lx - 11 : lx + 11).toFixed(1) +
-               '" y="' + (ly + 4).toFixed(1) + '" text-anchor="' + (flip ? "end" : "start") +
-               '" fill="' + c + '">' + s.sym + "</text></g>";
+               '" r="' + headR + '" fill="' + c + '" stroke="var(--surface)" stroke-width="1.8"/>';
+      if (labelled) {
+        heads += '<text class="sym-label" x="' + (flip ? lx - 11 : lx + 11).toFixed(1) +
+                 '" y="' + (ly + 4).toFixed(1) + '" text-anchor="' + (flip ? "end" : "start") +
+                 '" fill="' + c + '">' + shortName(name) + "</text>";
+      }
+      heads += "</g>";
     });
 
     svg.innerHTML = g + heads;
@@ -898,7 +945,7 @@
     var counts = { Leading: [], Improving: [], Weakening: [], Lagging: [] };
     series.forEach(function (s) {
       var p = s.tail[s.tail.length - 1];
-      counts[quadOf(p.x, p.y)].push(s.sym);
+      counts[quadOf(p.x, p.y)].push(meta(s.sym).name);
     });
     var parts = Object.keys(counts).filter(function (q) { return counts[q].length; })
       .map(function (q) { return q + ": " + counts[q].join(", "); });
@@ -916,18 +963,21 @@
         var s = lastSeries.filter(function (z) { return z.sym === sym; })[0];
         if (!s) return;
         var p = s.tail[s.tail.length - 1];
-        var ind = frame().industries[sym];
-        var chgCls = ind.chg >= 0 ? "up" : "down";
+        var m = meta(sym);
+        var chg = frame().industries[sym].chg;
+        var chgCls = chg >= 0 ? "up" : "down";
+        var sample = m.members.slice(0, 5).join(", ") +
+                     (m.members.length > 5 ? " +" + (m.members.length - 5) : "");
         tip.innerHTML =
-          '<div class="tt-title"><span class="sw" style="background:' + COLORS[sym] + '"></span>' +
-          sym + " &middot; " + ind.name + "</div>" +
-          '<div class="tt-row"><span>Sector</span><b>' + sectorName(ind.sector) + "</b></div>" +
+          '<div class="tt-title"><span class="sw" style="background:' + colorOf(sym) + '"></span>' +
+          m.name + "</div>" +
+          '<div class="tt-row"><span>Sector</span><b>' + sectorName(m.sector) + "</b></div>" +
           '<div class="tt-row"><span>' + prettyDate(p.d) + "</span><b>" + quadOf(p.x, p.y) + "</b></div>" +
           '<div class="tt-row"><span>RS-Ratio</span><b>' + p.x.toFixed(2) + "</b></div>" +
           '<div class="tt-row"><span>Momentum</span><b>' + p.y.toFixed(2) + "</b></div>" +
-          '<div class="tt-row"><span>Price</span><b>' + ind.price.toFixed(2) + "</b></div>" +
           '<div class="tt-row"><span>' + (mode === "weekly" ? "Week" : "Day") + "</span><b class=\"" +
-          chgCls + '">' + (ind.chg >= 0 ? "+" : "") + ind.chg.toFixed(2) + "%</b></div>";
+          chgCls + '">' + (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%</b></div>" +
+          '<div class="tt-row" style="margin-top:4px"><span style="max-width:210px">' + sample + "</span></div>";
         tip.style.display = "block";
         var r = box.getBoundingClientRect();
         var left = clientX - r.left + 16;
@@ -955,10 +1005,20 @@
 
   /* ---------- legend ---------- */
   function drawLegend() {
-    $("legend").innerHTML = activeSyms().map(function (sym) {
+    // 120+ chips help nobody — the legend only appears once a sector is chosen
+    // (the table plays that role for the whole market).
+    var act = activeSyms();
+    if (sectorFilter === "all") {
+      $("legend").innerHTML = "";
+      $("legend").hidden = true;
+      return;
+    }
+    $("legend").hidden = false;
+    $("legend").innerHTML = act.map(function (sym) {
       var on = !hidden[sym];
       return '<button type="button" data-sym="' + sym + '" aria-pressed="' + on + '">' +
-             '<span class="sw" style="background:' + COLORS[sym] + '"></span>' + sym + "</button>";
+             '<span class="sw" style="background:' + colorOf(sym) + '"></span>' +
+             shortName(meta(sym).name) + "</button>";
     }).join("");
     Array.prototype.forEach.call($("legend").querySelectorAll("button"), function (b) {
       b.addEventListener("click", function () { toggle(b.getAttribute("data-sym")); });
@@ -979,7 +1039,7 @@
     rows.sort(function (a, b) {
       var d;
       if (sortKey === "quad") d = QUAD_ORDER[a.quad] - QUAD_ORDER[b.quad] || b.x - a.x;
-      else if (sortKey === "name") d = a.sym < b.sym ? -1 : a.sym > b.sym ? 1 : 0;
+      else if (sortKey === "name") d = a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
       else if (sortKey === "sector") d = a.sector < b.sector ? -1 : a.sector > b.sector ? 1 : b.x - a.x;
       else d = b[sortKey] - a[sortKey];
       return d * sortDir;
@@ -987,13 +1047,13 @@
 
     $("tbody").innerHTML = rows.map(function (r) {
       return '<tr data-sym="' + r.sym + '" class="' + (hidden[r.sym] ? "off" : "") + '">' +
-        '<td><span class="name"><span class="sw" style="background:' + COLORS[r.sym] + '"></span>' +
-        '<span class="ticker">' + r.sym + '</span> <span class="full">' + r.name + "</span></span></td>" +
+        '<td><span class="name"><span class="sw" style="background:' + colorOf(r.sym) + '"></span>' +
+        '<span class="ticker">' + r.name + "</span></span></td>" +
         '<td><span class="secname">' + sectorName(r.sector) + "</span></td>" +
+        "<td>" + r.n + "</td>" +
         (rewound
-          ? '<td style="color:var(--muted)">&mdash;</td><td style="color:var(--muted)">&mdash;</td>'
-          : "<td>" + r.price.toFixed(2) + "</td>" +
-            '<td class="' + (r.chg >= 0 ? "up" : "down") + '">' +
+          ? '<td style="color:var(--muted)">&mdash;</td>'
+          : '<td class="' + (r.chg >= 0 ? "up" : "down") + '">' +
             (r.chg >= 0 ? "+" : "") + r.chg.toFixed(2) + "%</td>") +
         "<td>" + r.x.toFixed(2) + "</td>" +
         "<td>" + r.y.toFixed(2) + "</td>" +
@@ -1024,15 +1084,16 @@
     var leading = rows.filter(function (r) { return r.quad === "Leading"; });
     $("t-lead").textContent = leading.length + " of " + rows.length;
     $("t-lead-sub").textContent = leading.length
-      ? leading.sort(function (a, b) { return b.x - a.x; }).map(function (r) { return r.sym; }).slice(0, 5).join(", ")
+      ? leading.sort(function (a, b) { return b.x - a.x; })
+          .map(function (r) { return shortName(r.name); }).slice(0, 3).join(", ")
       : "No industry is leading";
 
     var byX = rows.slice().sort(function (a, b) { return b.x - a.x; });
     var top = byX[0], bot = byX[byX.length - 1];
-    $("t-strong").textContent = top.sym;
-    $("t-strong-sub").innerHTML = top.name + " &middot; " + top.quad;
-    $("t-weak").textContent = bot.sym;
-    $("t-weak-sub").innerHTML = bot.name + " &middot; " + bot.quad;
+    $("t-strong").textContent = shortName(top.name);
+    $("t-strong-sub").innerHTML = sectorName(top.sector) + " &middot; " + top.quad;
+    $("t-weak").textContent = shortName(bot.name);
+    $("t-weak-sub").innerHTML = sectorName(bot.sector) + " &middot; " + bot.quad;
   }
 
   /* ---------- render ---------- */
@@ -1043,8 +1104,9 @@
       " · vs " + (benchKey === "spy" ? DATA.benchmark : "own sector") +
       (cursor !== null && end < f.dates.length - 1 ? " (rewound)" : "");
     $("table-note").textContent = isRewound()
-      ? "Price and change are latest-close only, so they are hidden while rewound"
+      ? "Change is latest-close only, so it is hidden while rewound"
       : "Click a row to hide that industry from the chart";
+    rebuildColors();
     drawTiles();
     draw();
     drawLegend();
@@ -1100,10 +1162,7 @@
   function buildSectorSelect() {
     // Only sectors that actually have industry rows, in SECTORS order.
     var have = {};
-    SYMS.forEach(function (s) {
-      var ind = DATA.daily.industries[s];
-      if (ind) have[ind.sector] = true;
-    });
+    SYMS.forEach(function (s) { have[meta(s).sector] = true; });
     var opts = ['<option value="all">All sectors</option>'];
     Object.keys(DATA.sectors).forEach(function (sec) {
       if (have[sec]) opts.push('<option value="' + sec + '">' + DATA.sectors[sec] + "</option>");
@@ -1232,16 +1291,25 @@
 
   function boot(data) {
     DATA = data;
+    var secOrder = Object.keys(DATA.sectors);
+    SYMS = Object.keys(DATA.industries).sort(function (a, b) {
+      var A = DATA.industries[a], B = DATA.industries[b];
+      return (secOrder.indexOf(A.sector) - secOrder.indexOf(B.sector)) ||
+             (A.name < B.name ? -1 : A.name > B.name ? 1 : 0);
+    });
+    Object.keys(hidden).forEach(function (s) { if (!DATA.industries[s]) delete hidden[s]; });
     Array.prototype.forEach.call(document.querySelectorAll(".bench-name"), function (n) {
       n.textContent = DATA.benchmark;
     });
     $("formula").textContent = FORMULA;
+    var nStocks = SYMS.reduce(function (a, s) { return a + DATA.industries[s].members.length; }, 0);
     $("foot").innerHTML =
-      "Prices are split- and dividend-adjusted closes from " + DATA.source.split(" · ")[0] +
-      ", refreshed automatically after each US market close. Industries follow the GICS taxonomy via " +
-      "SPDR S&amp;P Select Industry ETFs (plus GDX and JETS). RS-Ratio and momentum are normalised " +
-      "against each industry's own trailing distribution, so 100 means &ldquo;in line with the " +
-      "benchmark&rdquo; and the units are standard deviations. Nothing here is investment advice.";
+      "Each industry is an equal-weight composite of the S&amp;P 500 members in its GICS " +
+      "sub-industry (" + SYMS.length + " industries from " + nStocks + " stocks), built from " +
+      "split- and dividend-adjusted closes from " + DATA.source.split(" · ")[0] +
+      " and refreshed automatically after each US market close. RS-Ratio and momentum are " +
+      "normalised against each industry's own trailing distribution, so 100 means &ldquo;in line " +
+      "with the benchmark&rdquo; and the units are standard deviations. Nothing here is investment advice.";
     freshness();
     $("loading").hidden = true;
     $("loading").style.display = "none";

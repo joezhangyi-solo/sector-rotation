@@ -10,7 +10,11 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EXPECTED_SECTORS = 11;
-const EXPECTED_INDUSTRIES = 20;
+// GICS sub-industries represented in the S&P 500 — the exact count drifts
+// with index changes and GICS revisions, so bound it rather than pin it.
+const MIN_INDUSTRIES = 100;
+const MAX_INDUSTRIES = 170;
+const MIN_MEMBERS = 480;
 const MAX_AGE_DAYS = 5;   // long weekends plus a holiday
 
 const problems = [];
@@ -72,24 +76,39 @@ checkCommon("industries.json", ind);
 check(ind.asof === data.asof,
       `industries.json asof ${ind.asof} does not match data.json ${data.asof}`);
 
+const slugs = Object.keys(ind.industries ?? {});
+check(slugs.length >= MIN_INDUSTRIES && slugs.length <= MAX_INDUSTRIES,
+      `industries: ${slugs.length} sub-industries, expected ${MIN_INDUSTRIES}–${MAX_INDUSTRIES}`);
+
+let totalMembers = 0;
+for (const slug of slugs) {
+  const m = ind.industries[slug];
+  check(!!ind.sectors?.[m.sector], `industries/${slug}: unknown sector ${m.sector}`);
+  check(typeof m.name === "string" && m.name.length > 0, `industries/${slug}: missing name`);
+  check(Array.isArray(m.members) && m.members.length >= 1, `industries/${slug}: no members`);
+  totalMembers += m.members?.length ?? 0;
+}
+check(totalMembers >= MIN_MEMBERS,
+      `industries: only ${totalMembers} constituents across all groups (expected >= ${MIN_MEMBERS})`);
+
 for (const mode of ["weekly", "daily"]) {
   const f = ind[mode];
   if (!checkFrame("industries.json", f, mode)) continue;
 
-  const syms = Object.keys(f.industries ?? {});
-  check(syms.length === EXPECTED_INDUSTRIES,
-        `industries/${mode}: ${syms.length} industries, expected ${EXPECTED_INDUSTRIES}`);
+  const frameSlugs = Object.keys(f.industries ?? {});
+  check(frameSlugs.length === slugs.length,
+        `industries/${mode}: ${frameSlugs.length} industries against ${slugs.length} in meta`);
 
-  for (const sym of syms) {
-    const s = f.industries[sym];
-    check(!!ind.sectors?.[s.sector], `industries/${mode}/${sym}: unknown sector ${s.sector}`);
-    check(Number.isFinite(s.price) && s.price > 0, `industries/${mode}/${sym}: bad price ${s.price}`);
+  for (const slug of frameSlugs) {
+    const s = f.industries[slug];
+    check(!!ind.industries[slug], `industries/${mode}/${slug}: not in meta`);
+    check(Number.isFinite(s.chg), `industries/${mode}/${slug}: bad change ${s.chg}`);
     for (const key of ["spy", "sec"]) {
       const pts = s[key];
       check(Array.isArray(pts) && pts.length === f.dates.length,
-            `industries/${mode}/${sym}.${key}: ${pts?.length} points against ${f.dates.length} dates`);
+            `industries/${mode}/${slug}.${key}: ${pts?.length} points against ${f.dates.length} dates`);
       const bad = (pts ?? []).find((p) => !plausible(p[0], p[1]));
-      check(!bad, `industries/${mode}/${sym}.${key}: implausible coordinate ${JSON.stringify(bad)}`);
+      check(!bad, `industries/${mode}/${slug}.${key}: implausible coordinate ${JSON.stringify(bad)}`);
     }
   }
 }

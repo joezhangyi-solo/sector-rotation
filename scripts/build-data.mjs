@@ -18,8 +18,8 @@
  * z-score uses the population standard deviation over a trailing window.
  */
 
-import { writeFile, mkdir } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { writeFile, readFile, mkdir } from "node:fs/promises";
+import { dirname, resolve, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -42,34 +42,35 @@ const SECTORS = {
 };
 
 /**
- * GICS-aligned industry ETFs, one level below the sector SPDRs. The backbone
- * is the SPDR S&P Select Industry family (same S&P/GICS taxonomy as the
- * sector funds, modified equal weight so the industry signal isn't one
- * megacap); GDX and JETS fill industries that family doesn't cover.
- * XLP, XLRE and XLU have no clean GICS industry ETF, so they have no rows.
+ * Industries are GICS sub-industries, computed bottom-up from the S&P 500
+ * constituents: every member's official GICS classification comes from the
+ * Wikipedia constituent list (with a committed snapshot as fallback), and
+ * each sub-industry becomes an equal-weight composite of its members'
+ * adjusted-close returns. That yields ~127 industries at Finviz-like
+ * granularity while staying on the standard taxonomy.
  */
-const INDUSTRIES = {
-  XME:  { name: "Metals & Mining",         sector: "XLB" },
-  GDX:  { name: "Gold Miners",             sector: "XLB" },
-  XTL:  { name: "Telecom",                 sector: "XLC" },
-  XOP:  { name: "Oil & Gas Exploration",   sector: "XLE" },
-  XES:  { name: "Oil & Gas Equipment",     sector: "XLE" },
-  KBE:  { name: "Banks",                   sector: "XLF" },
-  KRE:  { name: "Regional Banks",          sector: "XLF" },
-  KCE:  { name: "Capital Markets",         sector: "XLF" },
-  KIE:  { name: "Insurance",               sector: "XLF" },
-  XAR:  { name: "Aerospace & Defense",     sector: "XLI" },
-  XTN:  { name: "Transportation",          sector: "XLI" },
-  JETS: { name: "Airlines",                sector: "XLI" },
-  XSD:  { name: "Semiconductors",          sector: "XLK" },
-  XSW:  { name: "Software & Services",     sector: "XLK" },
-  XBI:  { name: "Biotech",                 sector: "XLV" },
-  XPH:  { name: "Pharmaceuticals",         sector: "XLV" },
-  XHE:  { name: "Health Care Equipment",   sector: "XLV" },
-  XHS:  { name: "Health Care Services",    sector: "XLV" },
-  XRT:  { name: "Retail",                  sector: "XLY" },
-  XHB:  { name: "Homebuilders",            sector: "XLY" },
+const SECTOR_BY_NAME = {
+  "Materials":              "XLB",
+  "Communication Services": "XLC",
+  "Energy":                 "XLE",
+  "Financials":             "XLF",
+  "Industrials":            "XLI",
+  "Information Technology": "XLK",
+  "Consumer Staples":       "XLP",
+  "Real Estate":            "XLRE",
+  "Utilities":              "XLU",
+  "Health Care":            "XLV",
+  "Consumer Discretionary": "XLY",
 };
+
+const CONSTITUENTS_SNAPSHOT = resolve(ROOT, "scripts/sp500-constituents.json");
+const CONSTITUENTS_URL = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies";
+
+// A handful of members are recent listings or flaky fetches; dropping a few
+// barely moves an equal-weight composite, but a wide failure means the data
+// source is broken and the run must die rather than ship thin composites.
+const MAX_SKIPPED_STOCKS = 10;
+const MIN_STOCK_BARS = 60;
 
 // How many points of each series to publish (keeps data.json small).
 const KEEP = { weekly: 120, daily: 160 };
@@ -87,7 +88,7 @@ const HEADERS = { Accept: "application/json" };
 
 const HOSTS = ["https://query1.finance.yahoo.com", "https://query2.finance.yahoo.com"];
 
-async function fetchSeries(symbol, attempt = 1) {
+async function fetchSeries(symbol, { minBars = 400, maxAttempts = 6 } = {}, attempt = 1) {
   const host = HOSTS[(attempt - 1) % HOSTS.length];
   const url =
     `${host}/v8/finance/chart/${symbol}` +
@@ -110,16 +111,77 @@ async function fetchSeries(symbol, attempt = 1) {
       if (adj[i] == null || close[i] == null) continue;
       rows.push({ d: isoDateET(r.timestamp[i]), adj: adj[i], close: close[i] });
     }
-    if (rows.length < 400) throw new Error(`only ${rows.length} bars returned`);
+    if (rows.length < minBars) throw new Error(`only ${rows.length} bars returned`);
     return rows;
   } catch (err) {
-    if (attempt >= 6) throw new Error(`${symbol}: ${err.message}`);
+    if (attempt >= maxAttempts) throw new Error(`${symbol}: ${err.message}`);
     const wait = Math.min(60000, 3000 * 2 ** (attempt - 1));
     console.log(`  ${symbol}: ${err.message} — retrying in ${wait / 1000}s`);
     await sleep(wait);
-    return fetchSeries(symbol, attempt + 1);
+    return fetchSeries(symbol, { minBars, maxAttempts }, attempt + 1);
   }
 }
+
+/** Dev convenience: SR_CACHE=<dir> caches raw Yahoo responses between runs. */
+async function getSeries(symbol, o) {
+  const dir = process.env.SR_CACHE;
+  if (dir) {
+    try { return JSON.parse(await readFile(join(dir, symbol + ".json"), "utf8")); }
+    catch { /* not cached yet */ }
+  }
+  const rows = await fetchSeries(symbol, o);
+  if (dir) {
+    await mkdir(dir, { recursive: true });
+    await writeFile(join(dir, symbol + ".json"), JSON.stringify(rows));
+  }
+  return rows;
+}
+
+/* ----------------------------------------------------------- constituents */
+
+/**
+ * The S&P 500 membership with each stock's GICS sector and sub-industry,
+ * parsed from Wikipedia's constituent table. On success the parsed list is
+ * snapshotted next to the scripts; if the fetch or parse fails, the last
+ * good snapshot is used so a Wikipedia hiccup can't kill the refresh.
+ */
+async function loadConstituents() {
+  try {
+    const res = await fetch(CONSTITUENTS_URL, {
+      headers: { "User-Agent": "sectorrotation.joezhang.co data builder (joe.zhangyi@gmail.com)" },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const html = await res.text();
+    const table = html.split(/<table[^>]*wikitable[^>]*>/)[1]?.split("</table>")[0];
+    if (!table) throw new Error("constituent table not found");
+    const strip = (s) =>
+      s.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&#39;/g, "'").trim();
+
+    const list = [];
+    for (const row of table.split("<tr").slice(2)) {
+      const cells = row.split(/<td[^>]*>/).slice(1).map((c) => strip(c.split(/<\/td>/)[0]));
+      if (cells.length < 4) continue;
+      const sector = SECTOR_BY_NAME[cells[2]];
+      if (!sector) throw new Error(`unknown GICS sector "${cells[2]}" for ${cells[0]}`);
+      // Yahoo uses dashes where the index uses dots (BRK.B -> BRK-B).
+      list.push({ ticker: cells[0].replace(/\./g, "-"), sector, sub: cells[3] });
+    }
+    if (list.length < 480 || list.length > 530)
+      throw new Error(`parsed ${list.length} constituents — page layout changed?`);
+
+    await writeFile(CONSTITUENTS_SNAPSHOT, JSON.stringify(list, null, 1));
+    console.log(`Constituents: ${list.length} from Wikipedia (snapshot refreshed)`);
+    return list;
+  } catch (err) {
+    console.log(`Constituents: Wikipedia failed (${err.message}) — using snapshot`);
+    const list = JSON.parse(await readFile(CONSTITUENTS_SNAPSHOT, "utf8"));
+    console.log(`Constituents: ${list.length} from snapshot`);
+    return list;
+  }
+}
+
+const slugify = (name) =>
+  name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -239,27 +301,67 @@ function buildFrame(mode, dates, priceBy, adjBy) {
 }
 
 /**
- * Like buildFrame, but for industry ETFs, each measured against BOTH the
- * broad benchmark and its parent sector ETF. Points are published as
- * [x, y] pairs aligned 1:1 with the frame's date axis (the dates would
- * otherwise dominate the payload at 20 industries x 2 benchmarks).
+ * Groups constituents by GICS sub-industry and builds each group's
+ * equal-weight composite level on the daily date axis: each day's composite
+ * return is the mean adjusted-close return of the members that traded both
+ * that day and the previous one, so a recent listing simply joins the mean
+ * once its history begins.
  */
-function buildIndustryFrame(mode, dates, priceBy, adjBy) {
+function buildComposites(constituents, adjByStock, dates) {
+  const groups = {};
+  for (const c of constituents) {
+    if (!adjByStock[c.ticker]) continue; // fetch was skipped
+    const slug = slugify(c.sub);
+    (groups[slug] ??= { name: c.sub, sector: c.sector, members: [] }).members.push(c.ticker);
+  }
+
+  const levels = {};
+  for (const [slug, g] of Object.entries(groups)) {
+    const adjs = g.members.map((t) => adjByStock[t]);
+    const map = {};
+    let level = 100;
+    for (let i = 0; i < dates.length; i++) {
+      if (i > 0) {
+        const d = dates[i], prev = dates[i - 1];
+        let sum = 0, n = 0;
+        for (const a of adjs) {
+          const p0 = a[prev], p1 = a[d];
+          if (p0 != null && p1 != null && p0 > 0) { sum += p1 / p0 - 1; n++; }
+        }
+        if (n > 0) level *= 1 + sum / n; // flat while no member has history yet
+      }
+      map[dates[i]] = level;
+    }
+    levels[slug] = map;
+    g.members.sort();
+  }
+  return { groups, levels };
+}
+
+/**
+ * Like buildFrame, but for the sub-industry composites, each measured
+ * against BOTH the broad benchmark and its parent sector ETF. Points are
+ * published as [x, y] pairs aligned 1:1 with the frame's date axis (the
+ * dates would otherwise dominate the payload at ~127 industries x 2
+ * benchmarks), and per-industry metadata lives once at the payload's top
+ * level rather than in each frame.
+ */
+function buildIndustryFrame(mode, dates, groups, levels, adjBy, priceBy) {
   const p = PARAMS[mode];
   const keep = KEEP[mode];
 
   const computed = {};
   let firstUsable = 0;
 
-  for (const [sym, meta] of Object.entries(INDUSTRIES)) {
-    computed[sym] = {};
-    for (const [key, bench] of [["spy", BENCHMARK], ["sec", meta.sector]]) {
-      const rs = dates.map((d) => (100 * adjBy[sym][d]) / adjBy[bench][d]);
+  for (const [slug, g] of Object.entries(groups)) {
+    computed[slug] = {};
+    for (const [key, bench] of [["spy", BENCHMARK], ["sec", g.sector]]) {
+      const rs = dates.map((d) => (100 * levels[slug][d]) / adjBy[bench][d]);
       const { ratio, mom } = rrg(rs, p);
       const first = ratio.findIndex((v, i) => v !== null && mom[i] !== null);
-      if (first < 0) throw new Error(`${sym}: not enough history for ${mode} industry RRG`);
+      if (first < 0) throw new Error(`${slug}: not enough history for ${mode} industry RRG`);
       firstUsable = Math.max(firstUsable, first);
-      computed[sym][key] = { ratio, mom };
+      computed[slug][key] = { ratio, mom };
     }
   }
 
@@ -267,15 +369,14 @@ function buildIndustryFrame(mode, dates, priceBy, adjBy) {
   const axis = dates.slice(start);
 
   const industries = {};
-  for (const [sym, meta] of Object.entries(INDUSTRIES)) {
-    const ind = { name: meta.name, sector: meta.sector };
+  for (const slug of Object.keys(groups)) {
+    const ind = {};
     for (const key of ["spy", "sec"]) {
-      const { ratio, mom } = computed[sym][key];
+      const { ratio, mom } = computed[slug][key];
       ind[key] = axis.map((_, j) => [round3(ratio[start + j]), round3(mom[start + j])]);
     }
-    ind.price = round2(priceBy[sym][axis.at(-1)]);
-    ind.chg = round2(pctChange(priceBy[sym], axis));
-    industries[sym] = ind;
+    ind.chg = round2(pctChange(levels[slug], axis));
+    industries[slug] = ind;
   }
 
   return {
@@ -310,28 +411,21 @@ function commonDates(series, symbols) {
 
 async function main() {
   const sectorSyms = [BENCHMARK, ...Object.keys(SECTORS)];
-  const industrySyms = Object.keys(INDUSTRIES);
-  const symbols = [...sectorSyms, ...industrySyms];
-  console.log(`Fetching ${symbols.length} symbols from Yahoo Finance…`);
+  console.log(`Fetching ${sectorSyms.length} ETFs from Yahoo Finance…`);
 
   const series = {};
-  for (const s of symbols) {
-    series[s] = await fetchSeries(s);
+  for (const s of sectorSyms) {
+    series[s] = await getSeries(s);
     process.stdout.write(`  ${s} ${series[s].length} bars\n`);
     await sleep(250);
   }
 
-  // The sector axis intersects only sector symbols, so the existing product
-  // never shrinks because one industry ETF skipped a day; the industry axis
-  // intersects everything it plots (industries plus their benchmarks).
   const common = commonDates(series, sectorSyms);
-  const commonInd = commonDates(series, symbols);
   console.log(`${common.length} common trading days: ${common[0]} → ${common.at(-1)}`);
-  console.log(`${commonInd.length} shared with industry ETFs`);
 
   const adjBy = {};
   const priceBy = {};
-  for (const s of symbols) {
+  for (const s of sectorSyms) {
     adjBy[s] = Object.fromEntries(series[s].map((r) => [r.d, r.adj]));
     priceBy[s] = Object.fromEntries(series[s].map((r) => [r.d, r.close]));
   }
@@ -353,15 +447,46 @@ async function main() {
   const kb = (JSON.stringify(payload).length / 1024).toFixed(0);
   console.log(`Wrote ${OUT} (${kb} KB) — as of ${payload.asof}`);
 
-  const weeklyInd = buildIndustryFrame("weekly", weeklyDates(commonInd), priceBy, adjBy);
-  const dailyInd = buildIndustryFrame("daily", commonInd, priceBy, adjBy);
+  /* ---- industries: equal-weight GICS sub-industry composites ---- */
+
+  const constituents = await loadConstituents();
+  console.log(`Fetching ${constituents.length} constituents from Yahoo Finance…`);
+
+  const adjByStock = {};
+  const skipped = [];
+  let done = 0;
+  for (const c of constituents) {
+    try {
+      const rows = await getSeries(c.ticker, { minBars: MIN_STOCK_BARS, maxAttempts: 4 });
+      adjByStock[c.ticker] = Object.fromEntries(rows.map((r) => [r.d, r.adj]));
+    } catch (err) {
+      skipped.push(c.ticker);
+      console.log(`  skipping ${c.ticker}: ${err.message}`);
+      if (skipped.length > MAX_SKIPPED_STOCKS)
+        throw new Error(`${skipped.length} constituents unfetchable (${skipped.join(", ")}) — aborting`);
+    }
+    if (++done % 50 === 0) console.log(`  …${done}/${constituents.length}`);
+    await sleep(150);
+  }
+  if (skipped.length) console.log(`Skipped ${skipped.length}: ${skipped.join(", ")}`);
+
+  const { groups, levels } = buildComposites(constituents, adjByStock, common);
+  console.log(`${Object.keys(groups).length} sub-industry composites from ${done - skipped.length} stocks`);
+
+  const weeklyInd = buildIndustryFrame("weekly", weeklyDates(common), groups, levels, adjBy, priceBy);
+  const dailyInd = buildIndustryFrame("daily", common, groups, levels, adjBy, priceBy);
+
+  const industriesMeta = {};
+  for (const [slug, g] of Object.entries(groups))
+    industriesMeta[slug] = { name: g.name, sector: g.sector, members: g.members };
 
   const indPayload = {
     benchmark: BENCHMARK,
     generated: payload.generated,
     asof: dailyInd.asof,
-    source: payload.source,
+    source: "Yahoo Finance · adjusted closes · GICS sub-industries via S&P 500 constituents",
     sectors: SECTORS,
+    industries: industriesMeta,
     weekly: weeklyInd,
     daily: dailyInd,
   };
