@@ -354,6 +354,31 @@
   tbody td .secname { color: var(--ink-2); }
   td.up { color: var(--good-text); font-weight: 600; }
   td.down { color: var(--crit-text); font-weight: 600; }
+
+  /* ---------- expandable member lists ---------- */
+  .members-btn {
+    font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink);
+    background: var(--input-bg); border: 1px solid var(--border);
+    border-radius: 999px; padding: 2px 10px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+    font-variant-numeric: tabular-nums;
+  }
+  .members-btn:hover { background: var(--series-soft); }
+  .members-btn .chev { font-size: 9px; color: var(--muted); transition: transform 0.15s; }
+  .members-btn[aria-expanded="true"] .chev { transform: rotate(90deg); }
+  tr.members-row { cursor: default; }
+  tr.members-row:hover { background: none; }
+  tr.members-row td {
+    text-align: left; white-space: normal; padding: 4px 14px 12px 30px;
+    background: var(--page);
+  }
+  .member-chip {
+    display: inline-block; margin: 3px 4px 0 0; padding: 2px 9px;
+    font-size: 11.5px; font-weight: 650; letter-spacing: 0.02em;
+    color: var(--ink); background: var(--input-bg);
+    border: 1px solid var(--border); border-radius: 999px; text-decoration: none;
+  }
+  .member-chip:hover { background: var(--series-soft); border-color: var(--series); }
   .pill {
     display: inline-block; padding: 2px 10px; border-radius: 999px;
     font-size: 11.5px; font-weight: 650; letter-spacing: 0.02em;
@@ -689,6 +714,7 @@
   var cursor = null;          // null = latest
   var timer = null;
   var hidden = {};            // sym -> true when hidden
+  var expanded = {};          // sym -> true when its member list is unfolded
   var sortKey = "quad";
   var sortDir = 1;            // 1 = ascending on the key's natural order
   var lastSeries = [];
@@ -1046,11 +1072,14 @@
     });
 
     $("tbody").innerHTML = rows.map(function (r) {
-      return '<tr data-sym="' + r.sym + '" class="' + (hidden[r.sym] ? "off" : "") + '">' +
+      var html = '<tr data-sym="' + r.sym + '" class="' + (hidden[r.sym] ? "off" : "") + '">' +
         '<td><span class="name"><span class="sw" style="background:' + colorOf(r.sym) + '"></span>' +
         '<span class="ticker">' + r.name + "</span></span></td>" +
         '<td><span class="secname">' + sectorName(r.sector) + "</span></td>" +
-        "<td>" + r.n + "</td>" +
+        '<td><button type="button" class="members-btn" data-members="' + r.sym +
+        '" aria-expanded="' + !!expanded[r.sym] +
+        '" aria-label="Show the ' + r.n + ' stocks in ' + r.name + '">' +
+        r.n + ' <span class="chev" aria-hidden="true">&#9654;</span></button></td>' +
         (rewound
           ? '<td style="color:var(--muted)">&mdash;</td>'
           : '<td class="' + (r.chg >= 0 ? "up" : "down") + '">' +
@@ -1058,10 +1087,26 @@
         "<td>" + r.x.toFixed(2) + "</td>" +
         "<td>" + r.y.toFixed(2) + "</td>" +
         '<td><span class="pill ' + r.quad + '">' + r.quad + "</span></td></tr>";
+      if (expanded[r.sym]) {
+        html += '<tr class="members-row"><td colspan="7">' +
+          meta(r.sym).members.map(function (t) {
+            return '<a class="member-chip" href="https://finance.yahoo.com/quote/' + t +
+                   '" target="_blank" rel="noopener">' + t + "</a>";
+          }).join("") + "</td></tr>";
+      }
+      return html;
     }).join("");
 
-    Array.prototype.forEach.call($("tbody").querySelectorAll("tr"), function (tr) {
+    Array.prototype.forEach.call($("tbody").querySelectorAll("tr[data-sym]"), function (tr) {
       tr.addEventListener("click", function () { toggle(tr.getAttribute("data-sym")); });
+    });
+    Array.prototype.forEach.call($("tbody").querySelectorAll("[data-members]"), function (b) {
+      b.addEventListener("click", function (e) {
+        e.stopPropagation(); // the row click hides the industry; this one unfolds it
+        var sym = b.getAttribute("data-members");
+        if (expanded[sym]) delete expanded[sym]; else expanded[sym] = true;
+        drawTable();
+      });
     });
   }
 
@@ -1105,7 +1150,7 @@
       (cursor !== null && end < f.dates.length - 1 ? " (rewound)" : "");
     $("table-note").textContent = isRewound()
       ? "Change is latest-close only, so it is hidden while rewound"
-      : "Click a row to hide that industry from the chart";
+      : "Click the member count to list an industry's stocks · click the row to hide it from the chart";
     rebuildColors();
     drawTiles();
     draw();
