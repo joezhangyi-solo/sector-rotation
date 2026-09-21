@@ -13,6 +13,9 @@ IBKR connector — the positions monitor runs separately as a local task.
 **Output.** One page per session in the Notion database **Daily Market
 Briefing**, data source `856c8131-8f3a-4737-9a8e-63c7021c2b14`.
 
+**Connectors used.** Intrinio (prices, market caps), FMP (mover discovery,
+index quotes, holidays), Notion (output), plus WebSearch for catalysts.
+
 ---
 
 ## Step 0 — Fix the session
@@ -28,18 +31,50 @@ fire the answer is the preceding Friday. Skip NYSE holidays — check
 State the session date explicitly in the page. Every number in the brief must
 belong to that one session.
 
+## Data sources — what actually works
+
+Established by a live test run on 2026-09-21. Do not rediscover this each
+morning; it cost ~30 wasted calls the first time.
+
+| Need | Use | Notes |
+|---|---|---|
+| Rotation | `scripts/rotation-brief.mjs` on the checkout | See Step 1 |
+| S&P 500 membership | `scripts/sp500-constituents.json` in this repo | 503 names with GICS sector + sub-industry, refreshed by the data workflow |
+| Session price + % change | **Intrinio** `get_stock_prices_eod_batch` | 50 tickers/call, close-over-close `percent_change` as a decimal |
+| Market cap | **Intrinio** `get_company_daily_metrics_batch` | 50 tickers/call, `on_date` = session date |
+| SMID mover discovery | **FMP** `marketPerformance` biggest-gainers / biggest-losers | Works on this plan |
+| Sector snapshot | **FMP** `marketPerformance` sector-performance-snapshot | Works |
+| Index levels | **FMP** `indexes` **index-quote** (one symbol per call) | Works |
+| Holidays | **FMP** `marketHours` holidays-by-exchange | Works |
+| Catalysts | **WebSearch** / WebFetch | FMP news is gated |
+
+**FMP endpoints that are gated on this account — do not call them.** The whole
+`quote` tool (including `batch-quote` and `batch-quote-short`), `indexes`
+`sp-500`, the `search` tool, and the `news` tool. `chart`
+`historical-price-eod-full` and `company` `batch-market-cap` are entitled for
+only a small subset of tickers and deny the rest, so they are useless for a
+broad screen — and `historical-price-eod-full` reports change against the
+session's *open*, not the previous close, which is the wrong number anyway.
+
+Intrinio's index-constituent endpoint is also not entitled, which is why
+membership comes from this repo rather than from an API.
+
 ## Step 1 — Sector and sub-industry rotation
 
 ```bash
-node scripts/rotation-brief.mjs --remote --format both > /tmp/rotation.json
+node scripts/rotation-brief.mjs --format both > /tmp/rotation.json
 ```
 
-`--remote` reads the live payloads from sectorrotation.joezhang.co, so the
-analysis reflects the most recent successful data refresh rather than
-whatever the checkout happens to contain. The `both` format returns the full
-structured report plus a rendered `markdown` field.
+Read the committed payloads in `public/`. They are rebuilt and committed by
+the refresh workflow at 21:35 UTC, before this routine fires at 23:00 UTC, so
+the checkout is current.
 
-The script emits, on the **weekly** RRG frame vs SPY:
+**Do not pass `--remote` here.** The sandbox's egress policy blocks
+sectorrotation.joezhang.co and the fetch fails with a 403 CONNECT. That flag
+exists for manual runs on Joe's machine, where the checkout may be stale.
+
+The `both` format returns the full structured report plus a rendered
+`markdown` field. The script emits, on the **weekly** RRG frame vs SPY:
 
 - all eleven sector SPDRs with quadrant, RS-Ratio, RS-Momentum, one-week
   deltas, and a state label,
@@ -59,37 +94,48 @@ the Notion page instead of presenting stale rotation as current.
 Do not recompute the RRG maths. The parameters were fitted to reproduce Joe's
 original chart and live in `scripts/build-data.mjs`.
 
-## Step 2 — Large-cap movers (FMP is the sole source of truth)
+## Step 2 — Large-cap movers (market cap > $10B)
 
-Use the **FMP connector** for every ticker, direction, percentage, price and
-market cap. Never assemble the mover universe from news or web search.
+Prices and market caps come from **Intrinio**, and they are the sole source of
+truth for every ticker, direction, percentage and price. News never selects a
+ticker; it only explains one already selected here.
 
-FMP's raw biggest-gainers/losers lists are micro-cap dominated and will not
-contain large caps. Instead:
+1. Read `scripts/sp500-constituents.json` for the 503-name universe. Add the
+   major non-S&P US-listed large caps and ADRs Joe follows: TSM, ASML, SHOP,
+   SE, MELI, ARM.
+2. Chunk into 50s and call `get_stock_prices_eod_batch` with `start_date` and
+   `end_date` both set to the session date. Take `close` and `percent_change`
+   (a decimal — `-0.0473` is −4.73%). About 11 calls.
+3. Chunk into 50s again and call `get_company_daily_metrics_batch` with
+   `on_date` = the session date for `market_cap`. About 11 calls.
+4. Screen `market_cap > 10e9`, rank by `|percent_change|`, and split into
+   gainers and decliners.
 
-1. Pull S&P 500 constituents (`indexes` endpoint, `sp-500`).
-2. Batch-quote them in chunks for `changesPercentage` and `marketCap`.
-3. Optionally add major non-S&P US-listed large caps and ADRs — TSM, ASML,
-   SHOP, SE, MELI, ARM — via batch quote.
-4. Screen `marketCap > $10B`, rank by `|changesPercentage|`.
+Do the chunking, screening and ranking in a script, not by eye. Target 15+
+gainers and 15+ decliners when the session supports it.
 
-Do the screening and ranking programmatically in a script, not by eye.
+If a handful of tickers come back empty, drop them and note the count. If more
+than about 10% fail, say so in the page rather than presenting a thin screen
+as complete.
 
-Target 15+ gainers and 15+ decliners when the session supports it.
+## Step 3 — SMID movers (market cap < $10B)
 
-## Step 3 — SMID movers (FMP, market cap < $10B)
+Discovery from **FMP**, market caps from **Intrinio**.
 
-Pull `marketPerformance` biggest-gainers and biggest-losers, then filter out
-warrants, rights, units, SPAC shells, leveraged and inverse single-stock ETFs
-and anything that is not common stock; require price ≥ $1. Batch-quote the
-survivors for market cap and split:
+1. Pull `marketPerformance` biggest-gainers and biggest-losers.
+2. Filter out warrants, rights, units, SPAC shells, leveraged and inverse
+   single-stock ETFs, and anything that is not common stock; require price
+   ≥ $1.
+3. Batch the survivors through Intrinio `get_company_daily_metrics_batch`
+   (`on_date` = session date) for market cap, and split:
+   - **Tier 2** — $1–10B
+   - **Tier 3** — under $1B, floor $25M
+4. Sub-floor and illiquid micro-caps go in a short "flagged exceptions" note,
+   not the ranked tables.
 
-- **Tier 2** — $1–10B
-- **Tier 3** — under $1B, floor $25M
-
-Sub-floor and illiquid micro-caps go in a short "flagged exceptions" note,
-not the ranked tables. If the raw lists run thin, supplement Tier 2 from
-most-active screened to $1–10B.
+If Intrinio has no market cap for a name — common for recent listings and
+foreign small caps — put it in the flagged exceptions note rather than
+guessing its tier.
 
 ## Step 4 — Catalysts and the Bucket A/B split
 
@@ -105,8 +151,9 @@ Cite the article behind every Bucket A claim. If no catalyst can be found,
 say so — "no identifiable catalyst" is an honest and useful answer, and is
 itself a Bucket B signal.
 
-Index backdrop comes from FMP index quotes (S&P 500, Nasdaq, Dow, Russell)
-plus `sector-performance-snapshot`.
+Index backdrop comes from FMP `indexes` / `index-quote`, one call each for
+`^GSPC`, `^IXIC`, `^DJI` and `^RUT`, plus `sector-performance-snapshot`. The
+multi-symbol form is gated, so call them singly.
 
 ## Step 5 — Write the Notion page
 
@@ -157,7 +204,9 @@ ranked remainder tables to the top 20 a side rather than dropping sections.
 ## Step 6 — Verify before finishing
 
 - The page exists and every property above is set.
-- Mover tickers and percentages trace to FMP, not to a news article.
+- Mover tickers and percentages trace to Intrinio (large-cap) or the FMP
+  mover lists (SMID), never to a news article.
+- Percent changes are close-over-close for the session, not close-vs-open.
 - The session date is consistent everywhere in the page.
 - Rotation `asof` is stated, and flagged if stale.
 - 15+ gainers and 15+ decliners where the session supported it.
@@ -171,6 +220,11 @@ standout substance move, and the standout story move.
 This is analysis, not advice or execution. Never place, modify or cancel an
 order. Never write to any Notion database other than the one named above.
 Never edit the repository — the routine reads it, the refresh workflow writes
-it. If the FMP connector is unavailable, still write the page with the
-rotation section and a clear note that mover data could not be retrieved; a
-partial brief that says what is missing beats no brief.
+it.
+
+Degrade honestly. If a data source is unavailable, write the page with the
+sections you could build and name what is missing and why — a partial brief
+that says what it lacks beats no brief, and beats a complete-looking brief
+built from a worse source. In particular, do not silently substitute a gated
+FMP endpoint's partial coverage for the full Intrinio screen: a "top movers"
+table built from whichever tickers happened to be entitled is not a screen.
