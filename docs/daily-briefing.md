@@ -91,6 +91,13 @@ The `both` format returns the full structured report plus a rendered
 than the session date, the refresh has failed; say so plainly at the top of
 the Notion page instead of presenting stale rotation as current.
 
+**"Stale" is reserved for that condition and nothing else.** It means the data
+did not refresh. It does not mean the weekly frame is lagging the tape — that
+is what the weekly frame *is*, and saying so in the title reads as a broken
+pipeline. When the weekly quadrants disagree with the session, write that the
+weekly frame is *behind the market*, or that the daily frame *led it*, and
+keep the word "stale" out of the title and properties.
+
 Do not recompute the RRG maths. The parameters were fitted to reproduce Joe's
 original chart and live in `scripts/build-data.mjs`.
 
@@ -136,6 +143,14 @@ Discovery from **FMP**, market caps from **Intrinio**.
 If Intrinio has no market cap for a name — common for recent listings and
 foreign small caps — put it in the flagged exceptions note rather than
 guessing its tier.
+
+**Sanity-check each market cap against the traded price, and check that the
+two providers agree on who the company is.** Intrinio carries stale share
+counts and mismatched entity records for recently restructured shells and
+foreign micro-caps: a $0.3M cap on a $20 close is wrong, not a nano-cap. It
+has also returned a different company name than FMP for the same ticker. When
+the caps look impossible or the names disagree, say so and mark the tier
+provisional rather than ranking on a number you do not believe.
 
 ## Step 4 — Catalysts and the Bucket A/B split
 
