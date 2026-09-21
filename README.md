@@ -13,6 +13,8 @@ public/data.json                generated sector data (committed, deployed as-is
 public/industries.json          generated industry data (committed, deployed as-is)
 scripts/build-data.mjs          fetches Yahoo Finance and recomputes both payloads
 scripts/verify-data.mjs         refuses to ship a stale or malformed payload
+scripts/rotation-brief.mjs      turns the payloads into a written rotation read
+docs/daily-briefing.md          instructions for the morning-briefing cloud routine
 scripts/sp500-constituents.json snapshot of the index membership (auto-refreshed)
 archive/                        the original one-off HTML this replaced
 ```
@@ -53,6 +55,32 @@ shows the data's own as-of date, and flags it once it is more than four days old
 
 Required repository secret: `FIREBASE_SERVICE_ACCOUNT_JOEZHANG_TOOLS`
 (a JSON service-account key for the `joezhang-tools` Firebase project).
+
+## Daily briefing
+
+`scripts/rotation-brief.mjs` reads the two payloads and writes the rotation
+read that opens Joe's morning brief: every sector's quadrant and one-week
+deltas, the sub-industries that are leading, improving and decelerating both
+vs SPY and vs their parent sector, the week's quadrant crossings, and a
+daily-frame overlay flagging sectors whose daily point has crossed a 100 line
+the weekly has not.
+
+```bash
+node scripts/rotation-brief.mjs                  # markdown, from public/
+node scripts/rotation-brief.mjs --remote         # from the live site instead
+node scripts/rotation-brief.mjs --format json    # structured
+node scripts/rotation-brief.mjs --format both    # structured, with markdown inside
+```
+
+It only reads the published points — the RRG maths stays in `build-data.mjs`,
+where the fitted parameters live.
+
+The `daily-market-briefing` cloud routine runs it at 07:00 Asia/Singapore,
+Mon–Fri, alongside an FMP-sourced large-cap and SMID mover screen, and writes
+one page per session to the **Daily Market Briefing** Notion database. The
+routine's prompt is a two-line bootstrap that points at
+[`docs/daily-briefing.md`](docs/daily-briefing.md) — edit that file and merge
+to `main` to change what the routine does.
 
 ## Local
 
