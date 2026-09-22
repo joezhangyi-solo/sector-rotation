@@ -335,6 +335,11 @@
   "sub": "Transaction & Payment Processing Services"
  },
  {
+  "ticker": "BE",
+  "sector": "XLI",
+  "sub": "Electrical Components & Equipment"
+ },
+ {
   "ticker": "BNY",
   "sector": "XLF",
   "sub": "Asset Management & Custody Banks"
@@ -378,11 +383,6 @@
   "ticker": "BF-B",
   "sector": "XLP",
   "sub": "Distillers & Vintners"
- },
- {
-  "ticker": "BLDR",
-  "sector": "XLI",
-  "sub": "Building Products"
  },
  {
   "ticker": "BG",
@@ -895,6 +895,11 @@
   "sub": "Electric Utilities"
  },
  {
+  "ticker": "P",
+  "sector": "XLK",
+  "sub": "Technology Hardware, Storage & Peripherals"
+ },
+ {
   "ticker": "ES",
   "sector": "XLU",
   "sub": "Electric Utilities"
@@ -1233,6 +1238,11 @@
   "ticker": "ITW",
   "sector": "XLI",
   "sub": "Industrial Machinery & Supplies & Components"
+ },
+ {
+  "ticker": "ILMN",
+  "sector": "XLV",
+  "sub": "Life Sciences Tools & Services"
  },
  {
   "ticker": "INCY",
@@ -1583,11 +1593,6 @@
   "ticker": "MRNA",
   "sector": "XLV",
   "sub": "Biotechnology"
- },
- {
-  "ticker": "TAP",
-  "sector": "XLP",
-  "sub": "Brewers"
  },
  {
   "ticker": "MDLZ",
@@ -2218,11 +2223,6 @@
   "ticker": "TKO",
   "sector": "XLC",
   "sub": "Movies & Entertainment"
- },
- {
-  "ticker": "TTD",
-  "sector": "XLC",
-  "sub": "Advertising"
  },
  {
   "ticker": "TSCO",
