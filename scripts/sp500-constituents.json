@@ -640,11 +640,6 @@
   "sub": "Transaction & Payment Processing Services"
  },
  {
-  "ticker": "CTVA",
-  "sector": "XLB",
-  "sub": "Fertilizers & Agricultural Chemicals"
- },
- {
   "ticker": "CSGP",
   "sector": "XLRE",
   "sub": "Real Estate Services"
@@ -1790,11 +1785,6 @@
   "sub": "Systems Software"
  },
  {
-  "ticker": "PSKY",
-  "sector": "XLC",
-  "sub": "Movies & Entertainment"
- },
- {
   "ticker": "PH",
   "sector": "XLI",
   "sub": "Industrial Machinery & Supplies & Components"
@@ -2060,6 +2050,11 @@
   "sub": "Retail REITs"
  },
  {
+  "ticker": "SKYD",
+  "sector": "XLC",
+  "sub": "Movies & Entertainment"
+ },
+ {
   "ticker": "SWKS",
   "sector": "XLK",
   "sub": "Semiconductors"
@@ -2255,6 +2250,11 @@
   "sub": "Diversified Banks"
  },
  {
+  "ticker": "TWLO",
+  "sector": "XLK",
+  "sub": "Systems Software"
+ },
+ {
   "ticker": "TYL",
   "sector": "XLK",
   "sub": "Application Software"
@@ -2390,6 +2390,11 @@
   "sub": "Construction Materials"
  },
  {
+  "ticker": "VYLR",
+  "sector": "XLP",
+  "sub": "Agricultural Products & Services"
+ },
+ {
   "ticker": "WRB",
   "sector": "XLF",
   "sub": "Property & Casualty Insurance"
@@ -2413,11 +2418,6 @@
   "ticker": "DIS",
   "sector": "XLC",
   "sub": "Movies & Entertainment"
- },
- {
-  "ticker": "WBD",
-  "sector": "XLC",
-  "sub": "Broadcasting"
  },
  {
   "ticker": "WM",
