@@ -1875,14 +1875,14 @@
   "sub": "Life & Health Insurance"
  },
  {
-  "ticker": "PEG",
-  "sector": "XLU",
-  "sub": "Electric Utilities"
- },
- {
   "ticker": "PTC",
   "sector": "XLK",
   "sub": "Application Software"
+ },
+ {
+  "ticker": "PEG",
+  "sector": "XLU",
+  "sub": "Electric Utilities"
  },
  {
   "ticker": "PSA",
