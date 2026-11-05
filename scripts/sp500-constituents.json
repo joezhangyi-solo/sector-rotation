@@ -1345,11 +1345,6 @@
   "sub": "Diversified Banks"
  },
  {
-  "ticker": "KVUE",
-  "sector": "XLP",
-  "sub": "Personal Care Products"
- },
- {
   "ticker": "KDP",
   "sector": "XLP",
   "sub": "Soft Drinks & Non-alcoholic Beverages"
@@ -1733,6 +1728,11 @@
   "ticker": "OXY",
   "sector": "XLE",
   "sub": "Oil & Gas Exploration & Production"
+ },
+ {
+  "ticker": "OKTA",
+  "sector": "XLK",
+  "sub": "Application Software"
  },
  {
   "ticker": "ODFL",
